@@ -72,6 +72,9 @@ h1 { font-size: 16px; font-weight: 700; color: #fff; }
   border: 1px solid #202020; background: #161616;
   margin-bottom: 3px; transition: border-color 0.15s, background 0.15s;
 }
+.item-row.no-cat {
+  grid-template-columns: 48px 1fr 120px 26px 26px 26px;
+}
 .item-row.confirmed { border-color: #1e4a2a; background: #0c1a10; }
 .item-row.ignored   { opacity: 0.28; }
 .item-row.missing   { border-color: #3d1010; }
@@ -216,31 +219,55 @@ select {
 .btn-gray:hover   { background: #202020; }
 
 /* ── Responsive ── */
-@media (max-width: 600px) {
-  body { padding: 14px 12px; }
+@media (max-width: 640px) {
+  body { padding: 12px 10px; font-size: 12px; }
+
+  /* 手機版：所有 item-row 改成垂直堆疊 */
   .item-row {
-    grid-template-columns: 44px 42px 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 44px 1fr 32px 32px 32px !important;
+    grid-template-rows: auto auto;
   }
+  .item-row.no-cat {
+    grid-template-columns: 44px 1fr 32px 32px 32px !important;
+  }
+
+  /* 內容區塊佔滿第二列 */
+  .content-area {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* cal-status 也佔滿一列 */
   .item-row .cal-status {
     grid-column: 1 / -1;
-    flex-direction: row; align-items: center; gap: 8px;
-    border-top: 1px solid #1a1a1a; padding-top: 6px; margin-top: 2px;
+    grid-row: 3;
+    flex-direction: row; align-items: flex-start; gap: 8px;
+    border-top: 1px solid #1a1a1a; padding-top: 5px; margin-top: 2px;
+    min-width: 0;
   }
-  .item-row .btn-confirm,
-  .item-row .btn-edit,
-  .item-row .btn-x {
-    width: 32px; height: 32px; font-size: 14px;
+  .cal-note { font-size: 9px; text-align: left; }
+
+  /* 按鈕放大方便點 */
+  .btn-confirm, .btn-edit, .btn-x {
+    width: 32px; height: 32px; font-size: 13px;
   }
-  .item-row .btn-confirm { grid-column: unset; }
-  .item-row > button:nth-child(5),
-  .item-row > button:nth-child(6),
-  .item-row > button:nth-child(7) {
-    grid-row: 1;
-  }
-  .filter-btn { padding: 6px 14px; font-size: 12px; }
-  .run-btn { font-size: 12px; padding: 10px 16px; }
+
+  /* 篩選按鈕 */
+  .filter-btn { padding: 5px 12px; font-size: 11px; }
+  .run-btn { font-size: 12px; padding: 9px 14px; }
   .help-item { font-size: 11px; }
+  .help-icon { min-width: 50px; }
+
+  /* bottom bar 換行 */
+  .bottom-bar { gap: 6px; }
+  .action-btn { padding: 8px 12px; font-size: 11px; }
+
+  /* config */
+  .config-input { font-size: 12px; }
+
+  /* select */
+  select { font-size: 10px; padding: 3px 2px; }
+  .sel-color { min-width: 44px; }
 }
 .empty-state {
   text-align: center; padding: 40px 20px; color: #2a2a2a; font-size: 13px;
@@ -309,7 +336,8 @@ select {
   </div>
   <div class="help-content" id="helpContent" style="display:none">
     <div class="help-grid">
-      <div class="help-item"><span class="help-icon">🔑 第一步</span><div>去 <b>aistudio.google.com</b> 用 Google 帳號登入 → 左側「API 金鑰」→「建立 API 金鑰」→ 複製貼到上方 API Key 欄位。填一次就記住了。</div></div>
+      <div class="help-item"><span class="help-icon">🔑 第一步</span><div>去 <b>aistudio.google.com</b> 用 Google 帳號登入 → 左側「API 金鑰」→「建立 API 金鑰」→ 複製貼到上方 API Key 欄位。填一次就記住了。<br><b>請用個人帳號申請免費 API</b>，避免大家共用同一個被限制用量。</div></div>
+      <div class="help-item"><span class="help-icon">⚠️ 注意</span><div>若讀取超過 180 秒沒有反應，請重新整理頁面再按一次 Run，通常第二次會快很多。</div></div>
       <div class="help-item"><span class="help-icon">🔄 Run</span><div>讀取最新 WIP 工作表，AI 自動解析所有含 @ 的任務並交叉比對行事曆。每次 WIP 更新後按一次。</div></div>
       <div class="help-item"><span class="help-icon">👤 篩選</span><div>Run 完後點選姓名，即時篩選該人員相關任務，不需重新讀取。</div></div>
       <div class="help-item"><span class="help-icon">✓ 打勾</span><div>確認這筆要處理。打勾後按底部「新增至好咖行事曆」才會真的動作，沒打勾的不會被處理。</div></div>
@@ -409,7 +437,6 @@ function buildFilterBar() {
 function setFilter(name) {
   activeFilter = name;
   buildFilterBar();
-  // Borry 專屬功能
   const isBorry = name === 'Borry';
   document.getElementById('remindersBtn').style.display = isBorry ? '' : 'none';
   render();
@@ -815,9 +842,10 @@ function makeRow(item) {
   const rowCls    = item.action === 'confirm' ? 'confirmed' : item.action === 'ignore' ? 'ignored' : (item.calStatus==='miss'?'missing':'');
   const isNoteOpen = !!noteOpen[item.id];
   const isCmdOpen  = !!cmdOpen[item.id];
+  const showCat   = activeFilter === 'Borry';
 
   const div = document.createElement('div');
-  div.className = `item-row ${rowCls}`;
+  div.className = `item-row ${rowCls} ${showCat ? '' : 'no-cat'}`;
   div.id = `row-${item.id}`;
   div.innerHTML = `
     <select class="sel-color ${colorCls}"
@@ -834,11 +862,12 @@ function makeRow(item) {
       <option value="graphite" ${item.color==='graphite' ?'selected':''} style="background:#111">⚫ 灰</option>
     </select>
 
-    <select class="sel-cat ${catCls}" ${activeFilter !== 'Borry' && activeFilter !== '所有事項' ? 'style="display:none"' : ''}
+    ${showCat ? `
+    <select class="sel-cat ${catCls}"
       onchange="setCat(${item.id},this.value);this.className='sel-cat '+(this.value==='拍攝'?'shoot':'work')">
       <option value="工作" ${item.cat==='工作'?'selected':''} style="background:#111">🗂 工作</option>
       <option value="拍攝" ${item.cat==='拍攝'?'selected':''} style="background:#111">🎬 拍攝</option>
-    </select>
+    </select>` : ''}
 
     <div class="content-area">
       <input class="cal-title-input" value="${esc(item.title)}"
