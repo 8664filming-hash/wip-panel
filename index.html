@@ -804,10 +804,11 @@ function render() {
     // 直接新增一行空白條目
     const addSec = document.createElement('div');
     addSec.className = 'add-section';
-    addSec.innerHTML = `
-      <div class="add-toggle" onclick="addNewItem('${esc(proj)}')">
-        ＋ 在「${proj}」直接新增項目
-      </div>`;
+    const addToggle = document.createElement('div');
+    addToggle.className = 'add-toggle';
+    addToggle.textContent = `＋ 在「${proj}」直接新增項目`;
+    addToggle.onclick = () => addNewItem(proj);
+    addSec.appendChild(addToggle);
     block.appendChild(addSec);
     panel.appendChild(block);
   });
@@ -981,9 +982,9 @@ async function loadCalPicker(id) {
 
     const ref = item.startISO ? new Date(item.startISO) : new Date();
     const sorted = [...cal]
-      .filter(e => Math.abs(new Date(e.start) - ref) < 30 * 86400000)
+      .filter(e => Math.abs(new Date(e.start) - ref) < 90 * 86400000)
       .sort((a, b) => Math.abs(new Date(a.start) - ref) - Math.abs(new Date(b.start) - ref))
-      .slice(0, 20);
+      .slice(0, 30);
 
     if (!sorted.length) { el.textContent = '行事曆沒有事件'; return; }
 
@@ -1144,14 +1145,7 @@ async function doCalendar() {
           const dateStr = item.startISO.slice(0, 10);
           const parts = dateStr.split('-').map(Number);
           const st = new Date(parts[0], parts[1]-1, parts[2]);
-          let en;
-          if (item.endISO && !item.endISO.includes('T00:00:00')) {
-            const ep = item.endISO.slice(0,10).split('-').map(Number);
-            en = new Date(ep[0], ep[1]-1, ep[2]);
-          } else {
-            en = new Date(parts[0], parts[1]-1, parts[2]);
-            en.setDate(en.getDate() + 1);
-          }
+          const en = new Date(parts[0], parts[1]-1, parts[2]+1);
           dates = { start: fmtDateOnly(st), end: fmtDateOnly(en), allDay: true };
         } else {
           const st = new Date(item.startISO);
@@ -1194,6 +1188,20 @@ async function doCalendar() {
         item.calEventId = data.eventId;
         item.calNote    = `✓ ${isUpdate ? '已更新' : '已建立'}：${item.title}`;
         ok++;
+      } else if (isUpdate && data.error && data.error.includes('not found')) {
+        // 找不到原事件 → 自動改成新建
+        params.set('action', 'addEvent');
+        params.delete('eventId');
+        const res2  = await fetch(`${url}?${params}`);
+        const data2 = await res2.json();
+        if (data2.ok) {
+          item.calStatus  = 'ok';
+          item.calEventId = data2.eventId;
+          item.calNote    = `✓ 已建立（原事件不存在）：${item.title}`;
+          ok++;
+        } else {
+          failures.push(`${item.title}：${data2.error || '新建失敗'}`);
+        }
       } else {
         failures.push(`${item.title}：${data.error || 'Apps Script 回傳失敗'}`);
       }
