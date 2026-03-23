@@ -733,6 +733,39 @@ function crossRef(wipItems, calEvts) {
   });
 }
 
+function addNewItem(proj) {
+  const sample = items.find(i => i.proj === proj);
+  const style  = getProjStyle(proj);
+  const newId  = Math.max(...items.map(i => i.id), 0) + 1;
+  items.push({
+    id:        newId,
+    proj:      proj,
+    projColor: style.projColor,
+    projText:  style.projText,
+    cat:       '工作',
+    color:     'ask',
+    calColor:  null,
+    assignees: [],
+    title:     `【${proj}】`,
+    date:      '',
+    startISO:  null,
+    endISO:    null,
+    allDay:    true,
+    calStatus: 'miss',
+    calEventId: null,
+    calNote:   '❌ 行事曆完全沒有此筆，需新建',
+    action:    null,
+    cmd:       '',
+    _geminiOpen: false
+  });
+  render();
+  // 自動聚焦到新行的標題輸入
+  setTimeout(() => {
+    const input = document.querySelector(`#row-${newId} .cal-title-input`);
+    if (input) { input.focus(); input.select(); }
+  }, 50);
+}
+
 function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
@@ -768,19 +801,13 @@ function render() {
 
     projItems.forEach(item => block.appendChild(makeRow(item)));
 
-    // Add new section
-    const hasCmd = addCmds[proj] && addCmds[proj].trim();
-    const isOpen = !!addOpen[proj];
+    // 直接新增一行空白條目
     const addSec = document.createElement('div');
     addSec.className = 'add-section';
     addSec.innerHTML = `
-      <div class="add-toggle ${hasCmd?'has-content':''}" onclick="toggleAdd('${proj}')">
-        ＋ 在「${proj}」新增項目給 Gemini${hasCmd ? '（已填寫）' : ''}
-      </div>
-      <textarea class="add-cmd-input ${isOpen?'open':''}" id="add-${proj}" rows="2"
-        placeholder="一句話描述，例：3/26 劇本討論 @Borry 石頭，下午2點"
-        oninput="addCmds['${proj}']=this.value"
-      >${esc(addCmds[proj]||'')}</textarea>`;
+      <div class="add-toggle" onclick="addNewItem('${esc(proj)}')">
+        ＋ 在「${proj}」直接新增項目
+      </div>`;
     block.appendChild(addSec);
     panel.appendChild(block);
   });
@@ -1112,13 +1139,13 @@ async function doCalendar() {
     try {
       let dates;
       if (item.startISO) {
-        if (item.allDay) {
-          // 整日：只取日期部分，避免時區問題
-          const dateStr = item.startISO.slice(0, 10); // YYYY-MM-DD
+        const isAllDay = item.allDay || item.startISO.includes('T00:00:00');
+        if (isAllDay) {
+          const dateStr = item.startISO.slice(0, 10);
           const parts = dateStr.split('-').map(Number);
           const st = new Date(parts[0], parts[1]-1, parts[2]);
           let en;
-          if (item.endISO) {
+          if (item.endISO && !item.endISO.includes('T00:00:00')) {
             const ep = item.endISO.slice(0,10).split('-').map(Number);
             en = new Date(ep[0], ep[1]-1, ep[2]);
           } else {
@@ -1136,6 +1163,15 @@ async function doCalendar() {
       }
       if (!dates) { failures.push(`${item.title}：無法解析日期「${item.date}」`); continue; }
 
+      const startStr = dates.allDay ? (typeof dates.start === 'string' ? dates.start : fmtDateOnly(dates.start)) : dates.start.toISOString();
+      const endStr   = dates.allDay ? (typeof dates.end   === 'string' ? dates.end   : fmtDateOnly(dates.end))   : dates.end.toISOString();
+
+      // 檢查結束必須晚於開始
+      if (new Date(endStr) <= new Date(startStr)) {
+        failures.push(`${item.title}：日期錯誤 start=${startStr} end=${endStr}`);
+        continue;
+      }
+
       const isUpdate = item.calStatus === 'ok' && item.calEventId;
       const colorToSend = item.color !== 'ask' ? item.color
         : isUpdate ? null
@@ -1143,8 +1179,8 @@ async function doCalendar() {
       const params = new URLSearchParams({
         action: isUpdate ? 'updateEvent' : 'addEvent',
         title:  encodeURIComponent(item.title),
-        start:  dates.allDay ? (typeof dates.start === 'string' ? dates.start : fmtDateOnly(dates.start)) : dates.start.toISOString(),
-        end:    dates.allDay ? (typeof dates.end   === 'string' ? dates.end   : fmtDateOnly(dates.end))   : dates.end.toISOString(),
+        start:  startStr,
+        end:    endStr,
         allDay: dates.allDay ? '1' : '0',
         desc:   encodeURIComponent(item.calNote || '')
       });
