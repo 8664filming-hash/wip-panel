@@ -422,7 +422,7 @@ function setFilter(name) {
 
 function filteredItems() {
   if (activeFilter === '所有事項') return items;
-  return items.filter(i => (i.assignees||[]).includes(activeFilter));
+  return items.filter(i => (i.assignees||[]).includes(activeFilter) || i.assignees.length === 0);
 }
 let nextId   = 100;
 
