@@ -1129,7 +1129,7 @@ async function doCalendar() {
 
   if (!confirm(
     `處理 ${toProcess.length} 筆到好咖行事曆：\n` +
-    toProcess.map(i => `${i.calStatus==='miss'?'🆕':'✏️'} ${i.color==='yellow'?'🟡':'🟣'} ${i.title} [${i.date}]`).join('\n') +
+    toProcess.map(i => `${i.calStatus==='miss'?'🆕':'✏️'} ${i.title} [${i.date}] status=${i.calStatus} id=${i.calEventId||'無'}`).join('\n') +
     '\n\n確定？')) return;
 
   setStatus('處理行事曆事件中…', 'load');
@@ -1176,7 +1176,7 @@ async function doCalendar() {
         start:  startStr,
         end:    endStr,
         allDay: dates.allDay ? '1' : '0',
-        desc:   encodeURIComponent(item.calNote || '')
+        desc:   ''
       });
       if (colorToSend) params.set('color', colorToSend);
       if (isUpdate) params.set('eventId', encodeURIComponent(item.calEventId));
@@ -1264,7 +1264,8 @@ function parseItemDate(s) {
   m = s.match(/(\d{1,2})\/(\d{1,2})\s*[-–~]\s*(\d{1,2})\/(\d{1,2})/);
   if (m) {
     const st = new Date(yr, +m[1]-1, +m[2]);
-    const en = new Date(yr, +m[3]-1, +m[4]+1);
+    const en = new Date(yr, +m[3]-1, +m[4]);
+    en.setDate(en.getDate() + 1);
     return { start: st, end: en, allDay: true, isDateOnly: true };
   }
 
