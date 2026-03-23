@@ -290,15 +290,9 @@ select {
 
 <!-- Config -->
 <div class="config-bar">
-  <span class="config-label">Apps Script URL：</span>
-  <input class="config-input" id="scriptUrl"
-    placeholder="貼上 Apps Script 部署網址（一次性設定，自動記住）"
-    oninput="saveConfig()" />
-</div>
-<div class="config-bar">
   <span class="config-label">API Key：</span>
   <input class="config-input" id="geminiKey" type="password"
-    placeholder="貼上 API Key（存在本機）"
+    placeholder="貼上 Gemini API Key（aistudio.google.com 免費申請）"
     oninput="saveConfig()" />
 </div>
 
@@ -315,16 +309,15 @@ select {
   </div>
   <div class="help-content" id="helpContent" style="display:none">
     <div class="help-grid">
-      <div class="help-item"><span class="help-icon">🔄</span><div><b>Run</b> — 讀取最新 WIP 工作表，AI 自動解析所有含 @ 的任務並交叉比對行事曆。每次更新 WIP 後按一次即可。</div></div>
-      <div class="help-item"><span class="help-icon">👤</span><div><b>人員篩選</b> — Run 完後點選姓名，即時篩選該人員相關任務，不需重新讀取。</div></div>
-      <div class="help-item"><span class="help-icon">✓</span><div><b>打勾</b> — 確認這筆要處理。打勾後按底部「新增至好咖行事曆」才會真的新增或更新。沒打勾的不會被處理。</div></div>
-      <div class="help-item"><span class="help-icon">✏</span><div><b>鉛筆</b> — 展開行事曆選取器，手動選取對應的行事曆事件（當 AI 比對錯誤時使用）。也可點「❌ 此筆確定沒有」標記為待新增。</div></div>
-      <div class="help-item"><span class="help-icon">✕</span><div><b>叉叉</b> — 忽略這筆，不列入處理。可再按一次取消忽略。</div></div>
-      <div class="help-item"><span class="help-icon">🟡</span><div><b>顏色選單</b> — 選擇行事曆事件顏色。預設「❓ 保留」代表沿用行事曆原本顏色（更新時不覆蓋），新建時預設黃色。</div></div>
-      <div class="help-item"><span class="help-icon">✨</span><div><b>給 Gemini 下指令</b> — 輸入自然語言指令直接修改清單，例如「把奶茶弟讀本改成 3/20 下午三點」或「幫小點點新增 3/24 空拍 @Borry 石頭」。</div></div>
-      <div class="help-item"><span class="help-icon">✓ 已建 / 待新增</span><div><b>行事曆狀態</b> — AI 判斷行事曆是否已有對應事件。判斷錯誤時用鉛筆手動修正。</div></div>
-      <div class="help-item"><span class="help-icon">🟡 新增至好咖行事曆</span><div>處理所有打勾的項目：✅已建 + 有對應事件 → 更新原事件；❌待新增 → 新建事件。</div></div>
-      <div class="help-item"><span class="help-icon">📱 新增至 Mac 提醒</span><div>將打勾項目送到 Mac 提醒事項，需安裝「好咖提醒事項」捷徑。</div></div>
+      <div class="help-item"><span class="help-icon">🔑 第一步</span><div>去 <b>aistudio.google.com</b> 用 Google 帳號登入 → 左側「API 金鑰」→「建立 API 金鑰」→ 複製貼到上方 API Key 欄位。填一次就記住了。</div></div>
+      <div class="help-item"><span class="help-icon">🔄 Run</span><div>讀取最新 WIP 工作表，AI 自動解析所有含 @ 的任務並交叉比對行事曆。每次 WIP 更新後按一次。</div></div>
+      <div class="help-item"><span class="help-icon">👤 篩選</span><div>Run 完後點選姓名，即時篩選該人員相關任務，不需重新讀取。</div></div>
+      <div class="help-item"><span class="help-icon">✓ 打勾</span><div>確認這筆要處理。打勾後按底部「新增至好咖行事曆」才會真的動作，沒打勾的不會被處理。</div></div>
+      <div class="help-item"><span class="help-icon">行事曆狀態欄</span><div>點擊可手動選取對應的行事曆事件（AI 比對錯誤時用）；右上角小 ✕ 清除對應。<br>• ✓ 已建 + 打勾 → 更新原事件標題，顏色保留原本（除非你有挑顏色）<br>• 待新增 + 打勾 → 新建事件，預設紫色</div></div>
+      <div class="help-item"><span class="help-icon">🎨 顏色</span><div>❓ 保留 = 更新時沿用原本顏色、新建時預設紫色。手動選色會覆蓋。</div></div>
+      <div class="help-item"><span class="help-icon">✏ 鉛筆</span><div>給 AI 下指令修改這筆，例如「改成 3/27」「人員加石頭」，底部按「送給 Gemini」執行。</div></div>
+      <div class="help-item"><span class="help-icon">✕ 叉叉</span><div>忽略這筆，不列入處理。再按一次取消忽略。</div></div>
+      <div class="help-item"><span class="help-icon">＋ 新增項目</span><div>每個專案下方點「＋ 直接新增項目」，填完標題和日期，打勾就能新增到行事曆。</div></div>
     </div>
   </div>
 </div>
@@ -358,7 +351,7 @@ select {
 <!-- Bottom bar -->
 <div class="bottom-bar">
   <button class="action-btn btn-yellow" onclick="doCalendar()">🟡 新增至好咖行事曆</button>
-  <button class="action-btn btn-blue"   onclick="doReminders()">📱 新增至 Mac 提醒</button>
+  <button class="action-btn btn-blue" id="remindersBtn" onclick="doReminders()" style="display:none">📱 新增至 Mac 提醒</button>
   <button class="action-btn btn-gray"   onclick="exportJSON()">📋 匯出確認清單</button>
 </div>
 
@@ -371,20 +364,19 @@ function toggleHelp() {
   a.textContent = open ? '▸' : '▾';
 }
 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxG4jiYjcq16tENKWSw3dCGN7kNw-bZ7j5M0G2GFTNLzA4wkIn-oINWamdTP6O05Q6B/exec';
+
 // ── CONFIG ────────────────────────────────────────────
-const LS_URL = 'borry_script_url';
 const LS_GEM = 'borry_gemini_key';
 
 function loadConfig() {
-  document.getElementById('scriptUrl').value = localStorage.getItem(LS_URL) || '';
   document.getElementById('geminiKey').value = localStorage.getItem(LS_GEM) || '';
 }
 function saveConfig() {
-  localStorage.setItem(LS_URL, document.getElementById('scriptUrl').value.trim());
   localStorage.setItem(LS_GEM, document.getElementById('geminiKey').value.trim());
 }
 function getScriptUrl() {
-  return document.getElementById('scriptUrl').value.trim();
+  return SCRIPT_URL;
 }
 function getGeminiKey() {
   return document.getElementById('geminiKey').value.trim();
@@ -417,6 +409,9 @@ function buildFilterBar() {
 function setFilter(name) {
   activeFilter = name;
   buildFilterBar();
+  // Borry 專屬功能
+  const isBorry = name === 'Borry';
+  document.getElementById('remindersBtn').style.display = isBorry ? '' : 'none';
   render();
 }
 
@@ -839,7 +834,7 @@ function makeRow(item) {
       <option value="graphite" ${item.color==='graphite' ?'selected':''} style="background:#111">⚫ 灰</option>
     </select>
 
-    <select class="sel-cat ${catCls}"
+    <select class="sel-cat ${catCls}" ${activeFilter !== 'Borry' && activeFilter !== '所有事項' ? 'style="display:none"' : ''}
       onchange="setCat(${item.id},this.value);this.className='sel-cat '+(this.value==='拍攝'?'shoot':'work')">
       <option value="工作" ${item.cat==='工作'?'selected':''} style="background:#111">🗂 工作</option>
       <option value="拍攝" ${item.cat==='拍攝'?'selected':''} style="background:#111">🎬 拍攝</option>
@@ -1121,7 +1116,7 @@ async function doCalendar() {
 
   const confirmed = items.filter(i=>i.action==='confirm');
   // ask 沒選就預設 yellow
-  confirmed.forEach(i => { if (i.color === 'ask') i.color = 'yellow'; });
+  confirmed.forEach(i => { if (i.color === 'ask') i.color = 'purple'; });
 
   // miss = 新建，ok + calEventId = 更新
   const toProcess = confirmed.filter(i => i.calStatus === 'miss' || (i.calStatus === 'ok' && i.calEventId));
@@ -1170,7 +1165,7 @@ async function doCalendar() {
       const isUpdate = item.calStatus === 'ok' && item.calEventId;
       const colorToSend = item.color !== 'ask' ? item.color
         : isUpdate ? null
-        : (item.calColor || 'yellow');
+        : (item.calColor || 'purple');
       const params = new URLSearchParams({
         action: isUpdate ? 'updateEvent' : 'addEvent',
         title:  encodeURIComponent(item.title),
