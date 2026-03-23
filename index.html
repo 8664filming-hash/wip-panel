@@ -238,31 +238,26 @@ select {
 @media (max-width: 640px) {
   body { padding: 12px 10px; font-size: 12px; }
 
+  /* Borry：顏色 + 工作 + 內容 + 打勾 + 鉛筆 + 叉叉 */
   .item-row {
-    grid-template-columns: 44px 42px 1fr 32px 32px 32px !important;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 44px 42px 1fr 36px 36px 36px !important;
   }
+  /* 其他人：顏色 + 內容 + 打勾 + 鉛筆 + 叉叉 */
   .item-row.no-cat {
-    grid-template-columns: 44px 1fr 32px 32px 32px !important;
+    grid-template-columns: 44px 1fr 36px 36px 36px !important;
   }
 
-  .content-area {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
+  .content-area { grid-column: 1 / -1; grid-row: 2; }
 
   .item-row .cal-status {
-    grid-column: 1 / -1;
-    grid-row: 3;
+    grid-column: 1 / -1; grid-row: 3;
     flex-direction: row; align-items: flex-start; gap: 8px;
     border-top: 1px solid #1a1a1a; padding-top: 5px; margin-top: 2px;
     min-width: 0;
   }
   .cal-note { font-size: 9px; text-align: left; }
 
-  .btn-confirm, .btn-edit, .btn-x {
-    width: 32px; height: 32px; font-size: 13px;
-  }
+  .btn-confirm, .btn-edit, .btn-x { width: 36px; height: 36px; font-size: 14px; }
 
   .filter-btn { padding: 5px 12px; font-size: 11px; }
   .run-btn { font-size: 12px; padding: 9px 14px; }
