@@ -542,7 +542,7 @@ ${JSON.stringify(processed)}
 ${JSON.stringify(calSimple)}
 
 請整理所有任務（每一行含 @ 的都是任務），只回傳 JSON：
-{"projects":[{"shortName":"2-4字簡稱","fullName":"原始專案名稱","tasks":[{"title":"任務描述不超過15字，不含@和人名","assignees":["石頭","Borry"],"dateStr":"03/19或03/19-03/21或null","startISO":"2026-03-19T14:00:00或null","endISO":"或null","allDay":true,"isShoot":false,"calStatus":"ok或miss","calMatchTitle":"對應行事曆標題或null","calEventId":"對應行事曆id或null"}]}]}
+{"projects":[{"shortName":"2-4字簡稱","fullName":"原始專案名稱","tasks":[{"title":"任務描述不超過15字，不含@和人名和日期","assignees":["石頭","Borry"],"dateStr":"03/19或03/19-03/21或null","startISO":"2026-03-19T14:00:00或null","endISO":"或null","allDay":true,"isShoot":false,"calStatus":"ok或miss","calMatchTitle":"對應行事曆標題或null","calEventId":"對應行事曆id或null"}]}]}
 
 人員規則：assignees 只列該行 @ 後面的人名，例「3/25 細綱 ＠Louis 昊奇 Borry」→["Louis","昊奇","Borry"]，不含@。注意：「巴西」和「Louis」是同一個人，統一用「巴西」。
 
@@ -1139,11 +1139,12 @@ async function doCalendar() {
   for (const item of toProcess) {
     try {
       let dates;
-      if (item.startISO) {
+      // 有跨天格式（含 - 或 ~）優先用 parseItemDate
+      const hasRange = item.date && /\d\/\d.*[-–~].*\d\/\d|\d\/\d.*[-–~].*\d(?!\d)/.test(item.date);
+      if (item.startISO && !hasRange) {
         const isAllDay = item.allDay || item.startISO.includes('T00:00:00');
         if (isAllDay) {
-          const dateStr = item.startISO.slice(0, 10);
-          const parts = dateStr.split('-').map(Number);
+          const parts = item.startISO.slice(0,10).split('-').map(Number);
           const st = new Date(parts[0], parts[1]-1, parts[2]);
           const en = new Date(parts[0], parts[1]-1, parts[2]+1);
           dates = { start: fmtDateOnly(st), end: fmtDateOnly(en), allDay: true };
