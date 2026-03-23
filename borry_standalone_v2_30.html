@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Borry 工作面板 · 好咖文創</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'PingFang TC', sans-serif;
+  background: #111; color: #e0e0e0;
+  padding: 24px 22px; min-height: 100vh; font-size: 13px;
+}
+h1 { font-size: 16px; font-weight: 700; color: #fff; }
+.sub { font-size: 11px; color: #444; margin-top: 2px; }
+
+/* ── Config ── */
+.config-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin: 12px 0 8px; flex-wrap: wrap;
+}
+.config-input {
+  flex: 1; min-width: 260px; background: #0d0d0d; border: 1px solid #222;
+  border-radius: 7px; color: #555; font-size: 10.5px; padding: 6px 10px;
+  font-family: inherit; outline: none;
+}
+.config-input:focus { border-color: #333; color: #888; }
+.config-input::placeholder { color: #2a2a2a; }
+.config-label { font-size: 9.5px; color: #333; white-space: nowrap; }
+
+/* ── Run bar ── */
+.run-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0 14px; border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.run-btn {
+  padding: 8px 20px; border-radius: 9px; font-size: 12px; font-weight: 700;
+  cursor: pointer; border: 1px solid #22c55e; background: #0c1a10; color: #4ade80;
+  transition: all 0.15s;
+}
+.run-btn:hover { background: #14532d; }
+.run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.status-txt { font-size: 10px; color: #2a2a2a; }
+.status-txt.ok   { color: #3a6a3a; }
+.status-txt.err  { color: #6a2a2a; }
+.status-txt.load { color: #2a4a6a; }
+
+/* ── Notice ── */
+.notice {
+  background: #1a1200; border: 1px solid #6b3a00; border-radius: 8px;
+  padding: 8px 14px; font-size: 11px; color: #f59e0b;
+  margin-bottom: 10px; line-height: 1.7; display: none;
+}
+.notice.show { display: block; }
+
+/* ── Project block ── */
+.proj-block { margin-bottom: 18px; }
+.proj-header {
+  font-size: 10px; font-weight: 800; letter-spacing: 1.2px;
+  padding: 5px 10px; border-bottom: 1px solid #1e1e1e;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+}
+.proj-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
+/* ── Item row ── */
+.item-row {
+  display: grid;
+  grid-template-columns: 48px 46px 1fr 120px 26px 26px 26px;
+  gap: 5px; align-items: start;
+  padding: 8px 10px; border-radius: 7px;
+  border: 1px solid #202020; background: #161616;
+  margin-bottom: 3px; transition: border-color 0.15s, background 0.15s;
+}
+.item-row.confirmed { border-color: #1e4a2a; background: #0c1a10; }
+.item-row.ignored   { opacity: 0.28; }
+.item-row.missing   { border-color: #3d1010; }
+
+select {
+  appearance: none; border-radius: 6px; font-size: 10px; font-weight: 600;
+  padding: 4px 3px; cursor: pointer; width: 100%; text-align: center;
+  border: 1px solid #2a2a2a;
+}
+.sel-cat.work  { background: #0a1a0d; color: #6ee7a0; border-color: #1a3a20; }
+.sel-cat.shoot { background: #0d1a30; color: #7dd3fc; border-color: #1e3a5f; }
+.sel-color.yellow { background: #1a1000; color: #fde68a; border-color: #6b3a00; }
+.sel-color.purple { background: #120a20; color: #c4b5fd; border-color: #4c1d95; }
+.sel-color.ask    { background: #1a1010; color: #f97316; border-color: #7c2d12; }
+
+.content-area { display: flex; flex-direction: column; gap: 3px; overflow: hidden; min-width: 0; }
+.cal-title-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid #2a2a2a; color: #d0d0d0;
+  font-size: 11.5px; font-weight: 500; font-family: inherit;
+  padding: 1px 0; outline: none; min-width: 0;
+}
+.cal-title-input:focus { border-bottom-color: #3b82f6; }
+.date-input {
+  background: transparent; border: none;
+  border-bottom: 1px dashed #252525; color: #555;
+  font-size: 10px; font-family: inherit;
+  padding: 1px 0; outline: none; width: 100%;
+  color-scheme: dark;
+}
+.date-input:focus { border-bottom-color: #3b82f6; color: #aaa; }
+.note-toggle {
+  font-size: 9.5px; color: #333; cursor: pointer; user-select: none;
+  display: inline-block;
+}
+.note-toggle:hover { color: #666; }
+.note-toggle.has { color: #4a6a58; }
+.note-input {
+  display: none; width: 100%; margin-top: 3px;
+  background: #0e1a12; border: 1px solid #1a3020; border-radius: 5px;
+  color: #5a8a68; font-size: 10.5px; padding: 5px 8px; resize: none;
+  font-family: inherit; outline: none; line-height: 1.6; min-height: 38px;
+}
+.note-input.open { display: block; }
+
+/* Cal status */
+.cal-status { display: flex; flex-direction: column; gap: 3px; align-items: center; min-width: 0; }
+.badge { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 8px; text-align: center; white-space: nowrap; }
+.badge-ok   { background: #14532d; color: #4ade80; }
+.badge-miss { background: #450a0a; color: #f87171; }
+.cal-note   { font-size: 8.5px; color: #4a6a58; text-align: center; line-height: 1.4; margin-top: 2px; word-break: break-all; }
+.cal-note.miss { color: #7a3a3a; }
+
+/* Buttons */
+.btn-confirm, .btn-edit, .btn-x {
+  width: 26px; height: 26px; border-radius: 6px;
+  border: 1px solid #2a2a2a; background: #1a1a1a; cursor: pointer;
+  font-size: 12px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s; user-select: none;
+}
+.btn-confirm:hover { background: #14532d; border-color: #22c55e; }
+.btn-confirm.on    { background: #14532d; border-color: #22c55e; }
+.btn-edit { border-color: #1a2a3a; background: #0a1020; color: #2563eb; font-size: 11px; }
+.btn-edit:hover  { border-color: #3b82f6; color: #60a5fa; }
+.btn-edit.active { border-color: #3b82f6; color: #93c5fd; background: #0e1e36; }
+.btn-x:hover { background: #450a0a; border-color: #ef4444; }
+.btn-x.on    { background: #450a0a; border-color: #ef4444; }
+
+/* Add section */
+.add-section { margin-top: 5px; padding: 7px 10px; border: 1px dashed #1e1e1e; border-radius: 7px; }
+.add-toggle { font-size: 10px; color: #444; cursor: pointer; user-select: none; }
+.add-toggle:hover { color: #888; }
+.add-toggle.has-content { color: #3b82f6; }
+.add-cmd-input {
+  display: none; margin-top: 6px;
+  width: 100%; background: #08101c; border: 1px solid #1e3358; border-radius: 5px;
+  color: #7dd3fc; font-size: 11px; padding: 5px 8px; resize: none;
+  font-family: inherit; outline: none; line-height: 1.5; min-height: 34px;
+}
+.add-cmd-input.open { display: block; }
+.add-cmd-input::placeholder { color: #1e3050; }
+
+/* ── Claude Chat section ── */
+.chat-section {
+  margin-top: 22px; border: 1px solid #1e3a5f; border-radius: 10px;
+  background: #080f1c; padding: 14px;
+}
+.chat-section h3 { font-size: 11px; color: #7dd3fc; font-weight: 600; margin-bottom: 5px; }
+.chat-section p  { font-size: 10px; color: #2a4a6a; margin-bottom: 10px; line-height: 1.6; }
+.chat-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.chat-btn {
+  padding: 7px 15px; border-radius: 8px; font-size: 11.5px; font-weight: 600;
+  cursor: pointer; border: 1px solid; transition: all 0.15s;
+}
+.chat-btn-send { background: #0a1a30; border-color: #3b82f6; color: #93c5fd; }
+.chat-btn-send:hover { background: #122040; }
+.chat-btn-cowork { background: #0d0d1a; border-color: #4c1d95; color: #c4b5fd; }
+.chat-btn-cowork:hover { background: #160d26; }
+
+/* Apply response */
+.apply-box { display: none; margin-top: 12px; }
+.apply-box.open { display: block; }
+.apply-label { font-size: 9.5px; color: #3b82f6; margin-bottom: 5px; }
+.apply-input {
+  width: 100%; background: #06080f; border: 1px solid #1a2a4a; border-radius: 6px;
+  color: #7dd3fc; font-size: 10.5px; padding: 7px 9px; resize: vertical;
+  font-family: monospace; outline: none; min-height: 60px; line-height: 1.5;
+}
+.apply-btn {
+  margin-top: 6px; padding: 6px 16px; border-radius: 7px; font-size: 11px;
+  font-weight: 600; cursor: pointer; background: #14532d;
+  border: 1px solid #22c55e; color: #4ade80;
+}
+
+/* Global note */
+.global-cmd {
+  margin-top: 16px; border: 1px solid #1e2030; border-radius: 10px;
+  background: #0d0d1a; padding: 12px;
+}
+.global-cmd h3 { font-size: 11px; color: #555; font-weight: 600; margin-bottom: 5px; }
+.global-input {
+  width: 100%; background: #08080f; border: 1px solid #1a1a2a; border-radius: 7px;
+  color: #8080c0; font-size: 12px; padding: 9px 12px; resize: vertical;
+  min-height: 44px; font-family: inherit; outline: none; line-height: 1.6;
+}
+.global-input::placeholder { color: #1a1a30; }
+
+/* Bottom bar */
+.bottom-bar {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid #1e1e1e;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.action-btn {
+  padding: 9px 18px; border-radius: 9px; border: 1px solid;
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.btn-yellow { background: #1c1200; border-color: #b45309; color: #fcd34d; }
+.btn-yellow:hover { background: #241800; }
+.btn-blue   { background: #0a1020; border-color: #3b82f6; color: #93c5fd; }
+.btn-blue:hover   { background: #122040; }
+.btn-gray   { background: #181818; border-color: #333; color: #888; }
+.btn-gray:hover   { background: #202020; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  body { padding: 14px 12px; }
+  .item-row {
+    grid-template-columns: 44px 42px 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .item-row .cal-status {
+    grid-column: 1 / -1;
+    flex-direction: row; align-items: center; gap: 8px;
+    border-top: 1px solid #1a1a1a; padding-top: 6px; margin-top: 2px;
+  }
+  .item-row .btn-confirm,
+  .item-row .btn-edit,
+  .item-row .btn-x {
+    width: 32px; height: 32px; font-size: 14px;
+  }
+  .item-row .btn-confirm { grid-column: unset; }
+  .item-row > button:nth-child(5),
+  .item-row > button:nth-child(6),
+  .item-row > button:nth-child(7) {
+    grid-row: 1;
+  }
+  .filter-btn { padding: 6px 14px; font-size: 12px; }
+  .run-btn { font-size: 12px; padding: 10px 16px; }
+  .help-item { font-size: 11px; }
+}
+.empty-state {
+  text-align: center; padding: 40px 20px; color: #2a2a2a; font-size: 13px;
+}
+
+/* Help bar */
+.help-bar {
+  margin-bottom: 10px; border: 1px solid #1e1e1e; border-radius: 8px;
+  background: #0d0d0d; overflow: hidden;
+}
+.help-toggle {
+  padding: 7px 12px; font-size: 10.5px; color: #444; cursor: pointer;
+  user-select: none; display: flex; align-items: center; gap: 6px;
+}
+.help-toggle:hover { color: #666; }
+.help-content { padding: 10px 14px 14px; border-top: 1px solid #1a1a1a; }
+.help-grid { display: flex; flex-direction: column; gap: 8px; }
+.help-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 10.5px; color: #555; line-height: 1.6;
+}
+.help-icon {
+  color: #3a3a3a; white-space: nowrap; min-width: 60px;
+  font-size: 10px; padding-top: 1px;
+}
+.help-item b { color: #666; }
+
+/* Filter bar */
+.filter-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.filter-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid #2a2a2a; background: #1a1a1a; color: #555;
+  transition: all 0.12s;
+}
+.filter-btn:hover { border-color: #444; color: #aaa; }
+.filter-btn.active { background: #14532d; border-color: #22c55e; color: #4ade80; }
+</style>
+</head>
+<body>
+
+<h1>好咖文創 工作面板</h1>
+<p class="sub" id="subtitle">WIP × 行事曆交叉比對</p>
+
+<!-- Config -->
+<div class="config-bar">
+  <span class="config-label">Apps Script URL：</span>
+  <input class="config-input" id="scriptUrl"
+    placeholder="貼上 Apps Script 部署網址（一次性設定，自動記住）"
+    oninput="saveConfig()" />
+</div>
+<div class="config-bar">
+  <span class="config-label">API Key：</span>
+  <input class="config-input" id="geminiKey" type="password"
+    placeholder="貼上 API Key（存在本機）"
+    oninput="saveConfig()" />
+</div>
+
+<!-- Run -->
+<div class="run-bar">
+  <button class="run-btn" id="runBtn" onclick="runSync()">🔄 Run — 智慧讀取 WIP × 行事曆</button>
+  <span class="status-txt" id="statusTxt">尚未載入</span>
+</div>
+
+<!-- 說明列 -->
+<div class="help-bar">
+  <div class="help-toggle" onclick="toggleHelp()">
+    <span id="helpArrow">▸</span> 使用說明
+  </div>
+  <div class="help-content" id="helpContent" style="display:none">
+    <div class="help-grid">
+      <div class="help-item"><span class="help-icon">🔄</span><div><b>Run</b> — 讀取最新 WIP 工作表，AI 自動解析所有含 @ 的任務並交叉比對行事曆。每次更新 WIP 後按一次即可。</div></div>
+      <div class="help-item"><span class="help-icon">👤</span><div><b>人員篩選</b> — Run 完後點選姓名，即時篩選該人員相關任務，不需重新讀取。</div></div>
+      <div class="help-item"><span class="help-icon">✓</span><div><b>打勾</b> — 確認這筆要處理。打勾後按底部「新增至好咖行事曆」才會真的新增或更新。沒打勾的不會被處理。</div></div>
+      <div class="help-item"><span class="help-icon">✏</span><div><b>鉛筆</b> — 展開行事曆選取器，手動選取對應的行事曆事件（當 AI 比對錯誤時使用）。也可點「❌ 此筆確定沒有」標記為待新增。</div></div>
+      <div class="help-item"><span class="help-icon">✕</span><div><b>叉叉</b> — 忽略這筆，不列入處理。可再按一次取消忽略。</div></div>
+      <div class="help-item"><span class="help-icon">🟡</span><div><b>顏色選單</b> — 選擇行事曆事件顏色。預設「❓ 保留」代表沿用行事曆原本顏色（更新時不覆蓋），新建時預設黃色。</div></div>
+      <div class="help-item"><span class="help-icon">✨</span><div><b>給 Gemini 下指令</b> — 輸入自然語言指令直接修改清單，例如「把奶茶弟讀本改成 3/20 下午三點」或「幫小點點新增 3/24 空拍 @Borry 石頭」。</div></div>
+      <div class="help-item"><span class="help-icon">✓ 已建 / 待新增</span><div><b>行事曆狀態</b> — AI 判斷行事曆是否已有對應事件。判斷錯誤時用鉛筆手動修正。</div></div>
+      <div class="help-item"><span class="help-icon">🟡 新增至好咖行事曆</span><div>處理所有打勾的項目：✅已建 + 有對應事件 → 更新原事件；❌待新增 → 新建事件。</div></div>
+      <div class="help-item"><span class="help-icon">📱 新增至 Mac 提醒</span><div>將打勾項目送到 Mac 提醒事項，需安裝「好咖提醒事項」捷徑。</div></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="filter-bar" id="filterBar" style="display:none">
+  <span class="config-label">篩選：</span>
+  <div class="filter-btns" id="filterBtns"></div>
+</div>
+
+<!-- Notice -->
+<div class="notice" id="notice"></div>
+
+<!-- Panel -->
+<div id="panel">
+  <div class="empty-state">按 Run 載入資料</div>
+</div>
+
+<!-- Gemini 指令欄 -->
+<div class="chat-section">
+  <h3>✨ 給 Gemini 下指令</h3>
+  <p>用 ✏ 在各項目寫修改指令，或在下方輸入整體指令（加事件、改標題、調整日期…），送出後 Gemini 直接更新清單。</p>
+  <textarea class="global-input" id="globalCmd"
+    placeholder="例：把奶茶弟的讀本會議改成 3/20 下午三點；幫小點點新增 3/24 空拍 @Borry 石頭"></textarea>
+  <div class="chat-btns" style="margin-top:10px">
+    <button class="chat-btn chat-btn-send" id="geminiBtn" onclick="sendToGemini()">✨ 送給 Gemini 處理</button>
+    <span class="status-txt" id="geminiStatus"></span>
+  </div>
+</div>
+
+<!-- Bottom bar -->
+<div class="bottom-bar">
+  <button class="action-btn btn-yellow" onclick="doCalendar()">🟡 新增至好咖行事曆</button>
+  <button class="action-btn btn-blue"   onclick="doReminders()">📱 新增至 Mac 提醒</button>
+  <button class="action-btn btn-gray"   onclick="exportJSON()">📋 匯出確認清單</button>
+</div>
+
+<script>
+function toggleHelp() {
+  const c = document.getElementById('helpContent');
+  const a = document.getElementById('helpArrow');
+  const open = c.style.display === 'block';
+  c.style.display = open ? 'none' : 'block';
+  a.textContent = open ? '▸' : '▾';
+}
+
+// ── CONFIG ────────────────────────────────────────────
+const LS_URL = 'borry_script_url';
+const LS_GEM = 'borry_gemini_key';
+
+function loadConfig() {
+  document.getElementById('scriptUrl').value = localStorage.getItem(LS_URL) || '';
+  document.getElementById('geminiKey').value = localStorage.getItem(LS_GEM) || '';
+}
+function saveConfig() {
+  localStorage.setItem(LS_URL, document.getElementById('scriptUrl').value.trim());
+  localStorage.setItem(LS_GEM, document.getElementById('geminiKey').value.trim());
+}
+function getScriptUrl() {
+  return document.getElementById('scriptUrl').value.trim();
+}
+function getGeminiKey() {
+  return document.getElementById('geminiKey').value.trim();
+}
+
+// ── STATE ─────────────────────────────────────────────
+let items       = [];
+let addCmds     = {};
+let noteOpen    = {};
+let cmdOpen     = {};
+let addOpen     = {};
+let activeFilter = '所有事項';
+
+const MEMBERS = ['所有事項','巴西','石頭','科佑','阿包','Bosen','Borry','CC','昊奇','Daren'];
+
+function buildFilterBar() {
+  const bar  = document.getElementById('filterBar');
+  const btns = document.getElementById('filterBtns');
+  // 從現有 items 取出實際出現的人員
+  const appeared = new Set();
+  items.forEach(i => (i.assignees||[]).forEach(a => appeared.add(a)));
+  const list = ['所有事項', ...MEMBERS.filter(m => m !== '所有事項' && appeared.has(m))];
+
+  btns.innerHTML = list.map(m => `
+    <button class="filter-btn ${m===activeFilter?'active':''}"
+      onclick="setFilter('${m}')">${m}</button>`).join('');
+  bar.style.display = 'flex';
+}
+
+function setFilter(name) {
+  activeFilter = name;
+  buildFilterBar();
+  render();
+}
+
+function filteredItems() {
+  if (activeFilter === '所有事項') return items;
+  return items.filter(i => (i.assignees||[]).includes(activeFilter));
+}
+let nextId   = 100;
+
+// Project colors (add new ones here as projects expand)
+const PROJ_STYLES = {
+  '大山':   { projColor:'#1a3520', projText:'#6ee7a0' },
+  '直男':   { projColor:'#1a1a35', projText:'#a5b4fc' },
+  '我幹':   { projColor:'#2a1a00', projText:'#fbbf24' },
+  '奶茶弟': { projColor:'#1f1010', projText:'#fca5a5' },
+  '小點點': { projColor:'#001a2a', projText:'#7dd3fc' },
+  '憲哥課程':{ projColor:'#0a1a0a', projText:'#86efac' },
+};
+const DEFAULT_STYLE = { projColor:'#1a1a2a', projText:'#a0a0d0' };
+
+function getProjStyle(proj) {
+  for (const key of Object.keys(PROJ_STYLES)) {
+    if (proj.includes(key)) return PROJ_STYLES[key];
+  }
+  return DEFAULT_STYLE;
+}
+
+// ── SYNC ──────────────────────────────────────────────
+// ── GEMINI 計時器 ─────────────────────────────────────
+let _timerInterval = null;
+function startTimer(setFn) {
+  let secs = 0;
+  setFn(`Gemini 解析中… 0s`);
+  _timerInterval = setInterval(() => {
+    secs++;
+    setFn(`Gemini 解析中… ${secs}s`);
+  }, 1000);
+}
+function stopTimer() {
+  if (_timerInterval) { clearInterval(_timerInterval); _timerInterval = null; }
+}
+
+async function runSync() {
+  const url = getScriptUrl();
+  if (!url) { setStatus('請先填入 Apps Script URL', 'err'); return; }
+  const key = getGeminiKey();
+  if (!key) { setStatus('請先填入 Gemini API Key', 'err'); return; }
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+
+  try {
+    // Step 1: 取原始資料
+    setStatus('讀取 WIP × 行事曆…', 'load');
+    const res  = await fetch(url + '?action=sync');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || '未知錯誤');
+
+    // Step 2: 前端直接打 Gemini
+    startTimer(msg => setStatus(msg, 'load'));
+    const parsed = await callGeminiFrontend(key, data.wip, data.cal || []);
+    stopTimer();
+    items = geminiStructToItems(parsed.projects || []);
+
+    document.getElementById('subtitle').textContent =
+      `WIP「${data.wip.sheetName}」× 行事曆 · Gemini 解析 · ${new Date().toLocaleTimeString('zh-TW')}`;
+
+    const missing = items.filter(i => i.calStatus === 'miss');
+    const noticeEl = document.getElementById('notice');
+    if (missing.length) {
+      noticeEl.textContent = `❌ 行事曆缺少 ${missing.length} 筆：${missing.map(i=>i.title).join(' / ')}`;
+      noticeEl.classList.add('show');
+    } else {
+      noticeEl.classList.remove('show');
+    }
+
+    render();
+    buildFilterBar();
+    setStatus(`✓ 解析完成，共 ${items.length} 筆`, 'ok');
+  } catch (err) {
+    stopTimer();
+    setStatus('錯誤：' + err.message, 'err');
+  }
+  btn.disabled = false;
+}
+
+async function callGeminiFrontend(key, wip, calEvts) {
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
+
+  // ── 前處理：從 F 欄抽出含 @/＠ 的任務行，大幅減少 token ──
+  const rawRows = (wip.rows || []).slice(0, 80);
+  const processed = [];
+  let currentProj = '';
+
+  rawRows.forEach(row => {
+    const a = String(row[0] || '').trim();
+    const f = String(row[5] || '').trim();
+    if (a && a.length > 1 && !/^[-•]/.test(a)) currentProj = a;
+    if (f && currentProj) {
+      f.split('\n').forEach(line => {
+        const l = line.trim();
+        if ((l.includes('@') || l.includes('＠')) && l.length > 3) {
+          processed.push({ proj: currentProj, task: l });
+        }
+      });
+    }
+  });
+
+  const calSimple = calEvts.slice(0, 40).map(e => ({
+    id:    e.id,
+    title: e.title,
+    start: e.start.slice(0,10),
+    end:   e.end.slice(0,10)
+  }));
+
+  const prompt = `你是台灣影視製作公司專案管理助手，今天 ${dateStr}。
+
+以下是從 WIP「${wip.sheetName}」預處理出來的任務行（已過濾只留含@人名的行）：
+${JSON.stringify(processed)}
+
+行事曆（未來90天）：
+${JSON.stringify(calSimple)}
+
+請整理所有任務（每一行含 @ 的都是任務），只回傳 JSON：
+{"projects":[{"shortName":"2-4字簡稱","fullName":"原始專案名稱","tasks":[{"title":"任務描述不超過15字，不含@和人名","assignees":["石頭","Borry"],"dateStr":"03/19或03/19-03/21或null","startISO":"2026-03-19T14:00:00或null","endISO":"或null","allDay":true,"isShoot":false,"calStatus":"ok或miss","calMatchTitle":"對應行事曆標題或null","calEventId":"對應行事曆id或null"}]}]}
+
+人員規則：assignees 只列該行 @ 後面的人名，例「3/25 細綱 ＠Louis 昊奇 Borry」→["Louis","昊奇","Borry"]，不含@。注意：「巴西」和「Louis」是同一個人，統一用「巴西」。
+
+shortName規則：去掉英文編號/底線/括號/季數，只留2-4字核心名稱。例：「k.奶茶弟的復仇」→「奶茶弟」、「h.公視台語台_我幹_電視電影」→「我幹」、「J.小點點MV」→「小點點」、「b.大山小腳ㄚ(第一季)_節目」→「大山」、「K.謝文憲線上課程製作」→「憲哥課程」、「i.文化部114年度劇集劇本開發補助_直男行不行_劇本」→「直男」、「a.晚窒息_電影」→「晚窒息」。
+
+行事曆比對（照優先順序）：
+1. 同一天 + 任何關鍵字重疊（人名/專案名片段）→ ok
+2. 標題有2個以上中文字重疊 + 日期差7天內 → ok
+3. 找到就填calEventId，只回JSON不含說明。`;
+
+
+  const res = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + key,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
+      })
+    }
+  );
+  const result = await res.json();
+  if (result.error) throw new Error('Gemini：' + result.error.message);
+  return JSON.parse(result.candidates[0].content.parts[0].text);
+}
+
+// 將 Gemini smartSync 結構轉成 items 陣列
+function geminiStructToItems(projects) {
+  const result = [];
+  let idCounter = 1;
+  projects.forEach(proj => {
+    const style = getProjStyle(proj.shortName);
+    (proj.tasks || []).forEach(task => {
+      result.push({
+        id:        idCounter++,
+        proj:      proj.shortName,
+        projColor: style.projColor,
+        projText:  style.projText,
+        cat:       task.isShoot ? '拍攝' : '工作',
+        color:     'ask',
+        calColor:  task.calColor || null,
+        assignees: task.assignees || [],
+        title:     `【${proj.shortName}】${task.title} @${(task.assignees||[]).join(' ')}`,
+        date:      task.dateStr || '',
+        startISO:  task.startISO || null,
+        endISO:    task.endISO   || null,
+        allDay:    task.allDay   ?? true,
+        calStatus:  task.calStatus || 'miss',
+        calEventId: task.calEventId || null,
+        calNote:    task.calMatchTitle ? `行事曆：「${task.calMatchTitle}」` : '❌ 行事曆完全沒有此筆，需新建',
+        action:    null,
+        cmd:       ''
+      });
+    });
+  });
+  return result;
+}
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('statusTxt');
+  el.textContent = msg;
+  el.className = 'status-txt ' + (cls || '');
+}
+
+// ── WIP PARSER ────────────────────────────────────────
+function parseWIP(wip) {
+  const rows = wip.rows || [];
+  if (rows.length < 2) return [];
+
+  // Find header row (first row with multiple non-empty cells)
+  let headerIdx = 0;
+  for (let i = 0; i < Math.min(6, rows.length); i++) {
+    if (rows[i].filter(c => String(c).trim()).length > 3) { headerIdx = i; break; }
+  }
+  const headers = rows[headerIdx].map(c => String(c).trim());
+
+  // Find Borry column (header == 'Borry' or contains 'Borry')
+  const borryCol = headers.findIndex(h => /borry/i.test(h));
+
+  const result = [];
+  let currentProj = '';
+  let nextItemId = 1;
+
+  for (let i = headerIdx + 1; i < rows.length; i++) {
+    const row = rows[i].map(c => String(c).trim());
+    const rowText = row.join(' ');
+
+    // Skip empty rows
+    if (!rowText.replace(/\s/g, '')) continue;
+
+    // Track project name (cell in first col that doesn't look like a task)
+    if (row[0] && !row[0].startsWith('@') && row[0].length > 1) {
+      const maybeProj = row[0];
+      // Heuristic: project names are usually short and don't contain dates
+      if (!/\d{1,2}\/\d{1,2}/.test(maybeProj) && maybeProj.length < 20) {
+        currentProj = maybeProj;
+      }
+    }
+
+    // Check Borry involvement
+    const borryInvolved = borryCol >= 0
+      ? row[borryCol] !== ''                    // dedicated column
+      : /borry/i.test(rowText);                 // text fallback
+
+    if (!borryInvolved) continue;
+
+    // Extract fields (flexible column order)
+    // Attempt: col0=proj, col1=task, col2=date OR col0=proj, col1=date, col2=task
+    const proj = currentProj || row[0] || '未知專案';
+    const task = row[1] || row[2] || '';
+    const date = findDate(row) || '';
+
+    // Collect crew (non-empty cells after col3 whose header looks like a name)
+    const crew = [];
+    headers.forEach((h, idx) => {
+      if (idx <= 2) return;
+      if (row[idx] !== '' && h && h.length > 0 && h.length < 12) crew.push(h);
+    });
+    if (!crew.some(c => /borry/i.test(c))) crew.push('Borry');
+
+    const style = getProjStyle(proj);
+    const title = `【${shortProj(proj)}】${task} @${crew.join(' ')}`;
+    const isSoloBorry = crew.length === 1 && /borry/i.test(crew[0]);
+    const isShoot = /拍攝|錄製|技堪|勘景/.test(task);
+
+    result.push({
+      id: nextItemId++,
+      proj: shortProj(proj),
+      projColor: style.projColor,
+      projText:  style.projText,
+      cat:   isShoot ? '拍攝' : '工作',
+      color: isSoloBorry ? 'yellow' : 'ask',
+      title,
+      date,
+      calStatus: 'miss', // filled in by crossRef
+      calNote:   '',
+      action: 'confirm',
+      cmd: ''
+    });
+  }
+  return result;
+}
+
+function shortProj(name) {
+  // Trim common suffixes for display
+  return name.replace(/（第.季）|第.季|[(（].*[)）]/g,'').trim();
+}
+
+function findDate(row) {
+  // Find first cell that looks like a date
+  for (const cell of row) {
+    if (/\d{1,2}[\/\-]\d{1,2}/.test(cell) || /\d{1,2}:\d{2}/.test(cell)) return cell;
+  }
+  return '';
+}
+
+// ── CALENDAR CROSS-REF ────────────────────────────────
+function crossRef(wipItems, calEvts) {
+  return wipItems.map(item => {
+    const projKey = item.proj.replace(/[\s（）()]/g, '');
+    const taskKey = item.title.replace(/【.*?】/, '').replace(/@.*/, '').trim().slice(0, 8);
+
+    // Find matching cal events
+    const matches = calEvts.filter(ev => {
+      const t = ev.title;
+      return projKey.split('').some(c => c.length > 0 && t.includes(c)) &&
+             taskKey.split('').filter(c => /[\u4e00-\u9fff]/.test(c))
+               .some(c => t.includes(c));
+    });
+
+    if (matches.length > 0) {
+      const m = matches[0];
+      const startStr = fmtDate(m.start);
+      const endStr   = fmtDate(m.end);
+      const range    = startStr === endStr ? startStr : `${startStr}–${endStr}`;
+      return {
+        ...item,
+        calStatus: 'ok',
+        calNote: `行事曆：「${m.title}」（${range}）`
+      };
+    }
+    return {
+      ...item,
+      calStatus: 'miss',
+      calNote: '❌ 行事曆完全沒有此筆，需新建'
+    };
+  });
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+// ── RENDER ────────────────────────────────────────────
+function render() {
+  const panel = document.getElementById('panel');
+  panel.innerHTML = '';
+  if (!items.length) {
+    panel.innerHTML = '<div class="empty-state">按 Run 載入資料</div>';
+    return;
+  }
+  const display = filteredItems();
+  if (!display.length) {
+    panel.innerHTML = '<div class="empty-state">此人員沒有相關任務</div>';
+    return;
+  }
+  const projects = [...new Set(display.map(i => i.proj))];
+
+  projects.forEach(proj => {
+    const projItems = display.filter(i => i.proj === proj);
+    const sample = projItems[0];
+    const block = document.createElement('div');
+    block.className = 'proj-block';
+
+    block.innerHTML = `
+      <div class="proj-header">
+        <span class="proj-tag" style="background:${sample.projColor};color:${sample.projText}">${proj}</span>
+        <span style="color:#2a2a2a">${projItems.filter(i=>i.action==='confirm').length}/${projItems.length} 勾選</span>
+      </div>`;
+
+    projItems.forEach(item => block.appendChild(makeRow(item)));
+
+    // Add new section
+    const hasCmd = addCmds[proj] && addCmds[proj].trim();
+    const isOpen = !!addOpen[proj];
+    const addSec = document.createElement('div');
+    addSec.className = 'add-section';
+    addSec.innerHTML = `
+      <div class="add-toggle ${hasCmd?'has-content':''}" onclick="toggleAdd('${proj}')">
+        ＋ 在「${proj}」新增項目給 Gemini${hasCmd ? '（已填寫）' : ''}
+      </div>
+      <textarea class="add-cmd-input ${isOpen?'open':''}" id="add-${proj}" rows="2"
+        placeholder="一句話描述，例：3/26 劇本討論 @Borry 石頭，下午2點"
+        oninput="addCmds['${proj}']=this.value"
+      >${esc(addCmds[proj]||'')}</textarea>`;
+    block.appendChild(addSec);
+    panel.appendChild(block);
+  });
+}
+
+function makeRow(item) {
+  const colorCls  = item.color === 'yellow' ? 'yellow' : item.color === 'purple' ? 'purple' : 'ask';
+  const catCls    = item.cat === '拍攝' ? 'shoot' : 'work';
+  const rowCls    = item.action === 'confirm' ? 'confirmed' : item.action === 'ignore' ? 'ignored' : (item.calStatus==='miss'?'missing':'');
+  const isNoteOpen = !!noteOpen[item.id];
+  const isCmdOpen  = !!cmdOpen[item.id];
+
+  const div = document.createElement('div');
+  div.className = `item-row ${rowCls}`;
+  div.id = `row-${item.id}`;
+  div.innerHTML = `
+    <select class="sel-color ${colorCls}"
+      onchange="setColor(${item.id},this.value);this.className='sel-color '+this.value">
+      <option value="ask"      ${item.color==='ask'      ?'selected':''} style="background:#111">❓ 保留</option>
+      <option value="yellow"   ${item.color==='yellow'   ?'selected':''} style="background:#111">🟡 黃</option>
+      <option value="purple"   ${item.color==='purple'   ?'selected':''} style="background:#111">🟣 紫</option>
+      <option value="red"      ${item.color==='red'      ?'selected':''} style="background:#111">🔴 紅</option>
+      <option value="pink"     ${item.color==='pink'     ?'selected':''} style="background:#111">🩷 粉</option>
+      <option value="orange"   ${item.color==='orange'   ?'selected':''} style="background:#111">🟠 橘</option>
+      <option value="teal"     ${item.color==='teal'     ?'selected':''} style="background:#111">🩵 藍綠</option>
+      <option value="sage"     ${item.color==='sage'     ?'selected':''} style="background:#111">🌿 綠</option>
+      <option value="blue"     ${item.color==='blue'     ?'selected':''} style="background:#111">🔵 藍</option>
+      <option value="graphite" ${item.color==='graphite' ?'selected':''} style="background:#111">⚫ 灰</option>
+    </select>
+
+    <select class="sel-cat ${catCls}"
+      onchange="setCat(${item.id},this.value);this.className='sel-cat '+(this.value==='拍攝'?'shoot':'work')">
+      <option value="工作" ${item.cat==='工作'?'selected':''} style="background:#111">🗂 工作</option>
+      <option value="拍攝" ${item.cat==='拍攝'?'selected':''} style="background:#111">🎬 拍攝</option>
+    </select>
+
+    <div class="content-area">
+      <input class="cal-title-input" value="${esc(item.title)}"
+        onchange="items.find(i=>i.id===${item.id}).title=this.value" />
+      <input class="date-input" value="${esc(item.date)}"
+        placeholder="4/3 或 4/2-4/3 或 4/3 15:00 或 4/2 14:00-4/3 15:00"
+        onchange="setDateText(${item.id},this.value)" />
+      <span class="note-toggle ${item.calNote?'has':''}" onclick="toggleNote(${item.id})">
+        ${isNoteOpen ? '▾ 備注' : '▸ 備注'}
+      </span>
+      <textarea class="note-input ${isNoteOpen?'open':''}" id="note-${item.id}" rows="2"
+        oninput="items.find(i=>i.id===${item.id}).calNote=this.value"
+      >${esc(item.calNote||'')}</textarea>
+    </div>
+
+    <div class="cal-status" onclick="toggleCmd(${item.id})" style="cursor:pointer;position:relative" title="點擊選取對應行事曆事件">
+      ${item.calStatus==='ok'
+        ? `<span class="badge badge-ok">✓ 已建</span>
+           <button onclick="event.stopPropagation();clearCalMatch(${item.id})" style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;border:none;background:#450a0a;color:#f87171;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>`
+        : '<span class="badge badge-miss">待新增</span>'}
+      <div class="cal-note ${item.calStatus==='miss'?'miss':''}">${esc(item.calNote)}</div>
+      ${isCmdOpen ? `
+      <div style="margin-top:4px" id="picker-${item.id}" onclick="event.stopPropagation()">
+        <div style="font-size:9px;color:#2563eb;margin-bottom:5px">🗓 選取對應的行事曆事件</div>
+        <div id="picker-list-${item.id}" style="font-size:10px;color:#555">載入中…</div>
+      </div>` : ''}
+    </div>
+
+    <button class="btn-confirm ${item.action==='confirm'?'on':''}"
+      onclick="toggleConfirm(${item.id})" title="確認">✓</button>
+    <button class="btn-edit ${item.cmd?'active':''}"
+      onclick="toggleGeminiCmd(${item.id})" title="給 Gemini 指令">✏</button>
+    <button class="btn-x ${item.action==='ignore'?'on':''}"
+      onclick="toggleIgnore(${item.id})" title="忽略">✕</button>
+  `;
+
+  // 展開 Gemini 指令欄（獨立於 picker）
+  if (item._geminiOpen) {
+    const contentArea = div.querySelector('.content-area');
+    const gemDiv = document.createElement('div');
+    gemDiv.style.cssText = 'margin-top:4px';
+    gemDiv.innerHTML = `
+      <div style="font-size:9px;color:#2563eb;margin-bottom:2px">✏ 給 Gemini 指令</div>
+      <textarea style="width:100%;background:#08101c;border:1px solid #1e3358;border-radius:5px;
+        color:#7dd3fc;font-size:11px;padding:5px 8px;resize:none;font-family:inherit;
+        outline:none;line-height:1.5;min-height:34px"
+        id="gcmd-${item.id}" rows="2"
+        placeholder="例：改成 3/27、顏色改紫、人員加石頭…"
+        oninput="items.find(i=>i.id===${item.id}).cmd=this.value"
+      >${esc(item.cmd||'')}</textarea>`;
+    contentArea.appendChild(gemDiv);
+    setTimeout(() => document.getElementById(`gcmd-${item.id}`)?.focus(), 50);
+  }
+
+  return div;
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmtTimeShort(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function setColor(id, val) {
+  const item = items.find(i=>i.id===id); if (item) item.color = val;
+}
+function setCat(id, val) {
+  const item = items.find(i=>i.id===id); if (item) item.cat = val;
+}
+function toggleConfirm(id) {
+  const item = items.find(i=>i.id===id); if (!item) return;
+  item.action = item.action === 'confirm' ? null : 'confirm'; render();
+}
+function toggleIgnore(id) {
+  const item = items.find(i=>i.id===id); if (!item) return;
+  item.action = item.action === 'ignore' ? null : 'ignore'; render();
+}
+function toggleNote(id) {
+  const ta = document.getElementById(`note-${id}`);
+  if (ta) { const item = items.find(i=>i.id===id); if(item) item.calNote = ta.value; }
+  noteOpen[id] = !noteOpen[id]; render();
+  if (noteOpen[id]) setTimeout(()=>{ document.getElementById(`note-${id}`)?.focus(); }, 50);
+}
+function toggleCmd(id) {
+  cmdOpen[id] = !cmdOpen[id]; render();
+  if (cmdOpen[id]) setTimeout(() => loadCalPicker(id), 50);
+}
+function clearCalMatch(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  item.calStatus  = 'miss';
+  item.calEventId = null;
+  item.calNote    = '❌ 行事曆完全沒有此筆，需新建';
+  render();
+}
+function toggleGeminiCmd(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  const gcmd = document.getElementById(`gcmd-${id}`);
+  if (gcmd) item.cmd = gcmd.value;
+  item._geminiOpen = !item._geminiOpen;
+  render();
+}
+function toggleAdd(proj) {
+  const ta = document.getElementById(`add-${proj}`);
+  if (ta) addCmds[proj] = ta.value;
+  addOpen[proj] = !addOpen[proj]; render();
+  if (addOpen[proj]) setTimeout(()=>{ document.getElementById(`add-${proj}`)?.focus(); }, 50);
+}
+function syncLive() {
+  items.forEach(item => {
+    const c = document.getElementById(`cmd-${item.id}`); if (c) item.cmd = c.value;
+    const n = document.getElementById(`note-${item.id}`); if (n) item.calNote = n.value;
+  });
+  Object.keys(addCmds).forEach(proj => {
+    const t = document.getElementById(`add-${proj}`); if (t) addCmds[proj] = t.value;
+  });
+}
+
+// ── 行事曆選取器 ──────────────────────────────────────
+async function loadCalPicker(id) {
+  const el = document.getElementById(`picker-list-${id}`);
+  if (!el) return;
+
+  const item = items.find(i => i.id === id);
+  const url  = getScriptUrl();
+
+  try {
+    const res  = await fetch(url + '?action=sync');
+    const data = await res.json();
+    const cal  = data.cal || [];
+
+    const ref = item.startISO ? new Date(item.startISO) : new Date();
+    const sorted = [...cal]
+      .filter(e => Math.abs(new Date(e.start) - ref) < 30 * 86400000)
+      .sort((a, b) => Math.abs(new Date(a.start) - ref) - Math.abs(new Date(b.start) - ref))
+      .slice(0, 20);
+
+    if (!sorted.length) { el.textContent = '行事曆沒有事件'; return; }
+
+    el.innerHTML = `
+      <div style="margin-bottom:6px;color:#555;font-size:10px">點選對應事件 / 點❌確定沒有</div>
+      <div style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:3px" id="picker-btns-${id}">
+      </div>`;
+
+    const container = document.getElementById(`picker-btns-${id}`);
+    sorted.forEach(ev => {
+      const d = ev.start.slice(5,10).replace('-','/');
+      const btn = document.createElement('button');
+      btn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #1e3a5f;background:#08101c;color:#93c5fd;font-size:11px;cursor:pointer;width:100%;line-height:1.4';
+      btn.innerHTML = `<span style="color:#555;font-size:10px;margin-right:6px">${d}</span>${ev.title}`;
+      btn.onmouseover = () => btn.style.background = '#0e1e36';
+      btn.onmouseout  = () => btn.style.background = '#08101c';
+      btn.onclick = () => pickCalEvent(id, ev.id, ev.title, true, ev.color || null);
+      container.appendChild(btn);
+    });
+    const missBtn = document.createElement('button');
+    missBtn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #3d1010;background:#1a0808;color:#f87171;font-size:11px;cursor:pointer;margin-top:4px;width:100%';
+    missBtn.textContent = '❌ 此筆確定沒有行事曆事件';
+    missBtn.onclick = () => pickCalEvent(id, null, null, false);
+    container.appendChild(missBtn);
+  } catch (err) {
+    el.textContent = '載入失敗：' + err.message;
+  }
+}
+
+function pickCalEvent(id, eventId, eventTitle, hasEvent, eventColor) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+
+  if (hasEvent) {
+    item.calStatus  = 'ok';
+    item.calEventId = eventId;
+    item.calColor   = eventColor || null;
+    item.calNote    = `行事曆：「${eventTitle}」`;
+  } else {
+    item.calStatus  = 'miss';
+    item.calEventId = null;
+    item.calNote    = '❌ 行事曆完全沒有此筆，需新建';
+  }
+  item.cmd  = '';
+  cmdOpen[id] = false;
+  render();
+}
+// ── GEMINI 指令處理 ────────────────────────────────────
+async function sendToGemini() {
+  const key = getGeminiKey();
+  if (!key) { alert('請先在設定欄填入 Gemini API Key'); return; }
+
+  syncLive();
+  const globalCmd = document.getElementById('globalCmd').value.trim();
+  const itemCmds  = items.filter(i => i.cmd && i.cmd.trim())
+    .map(i => `[id:${i.id}] ${i.title} → ${i.cmd.trim()}`).join('\n');
+  const addReqs   = Object.entries(addCmds).filter(([,v]) => v && v.trim())
+    .map(([proj, cmd]) => `[新增｜${proj}] ${cmd.trim()}`).join('\n');
+
+  if (!globalCmd && !itemCmds && !addReqs) {
+    alert('請先填寫指令（下方輸入欄或各項目的 ✏ 欄位）'); return;
+  }
+
+  const compact = items.map(({ projColor, projText, ...rest }) => rest);
+  const yr = new Date().getFullYear();
+
+  const prompt = `你是台灣影視製作公司的專案管理助手，今年是 ${yr} 年。
+
+以下是目前工作清單（JSON）：
+${JSON.stringify(compact)}
+
+${itemCmds ? `== 各項目修改指令 ==\n${itemCmds}` : ''}
+${addReqs  ? `== 新增項目描述 ==\n${addReqs}` : ''}
+${globalCmd? `== 整體指令 ==\n${globalCmd}` : ''}
+
+請執行以上指令，回傳更新後的完整 JSON 陣列。
+規則：
+- 只回傳 JSON 陣列，不含任何說明文字
+- 保留原有項目的 id 不變
+- 新增項目 id 從 ${Math.max(...items.map(i=>i.id), 99) + 1} 開始
+- 每個項目需包含：id, proj, cat, color, title, date, startISO, endISO, allDay, calStatus, calNote, action, cmd
+- startISO / endISO 請轉成 ISO 8601 格式，沒有時間就 null
+- calStatus: 有對應行事曆事件為 "ok"，否則 "miss"`;
+
+  const btn = document.getElementById('geminiBtn');
+  btn.disabled = true;
+  const gemSt = document.getElementById('geminiStatus');
+  gemSt.className = 'status-txt load';
+  startTimer(msg => { gemSt.textContent = msg; });
+
+  try {
+    const res = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + key,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
+        })
+      }
+    );
+    stopTimer();
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    let parsed = JSON.parse(data.candidates[0].content.parts[0].text);
+    if (!Array.isArray(parsed)) throw new Error('Gemini 回傳格式異常');
+
+    parsed = parsed.map(item => ({ ...getProjStyle(item.proj), ...item }));
+    items = parsed;
+    nextId = Math.max(...items.map(i => i.id), 99) + 1;
+
+    document.getElementById('globalCmd').value = '';
+    items.forEach(i => { i.cmd = ''; });
+    addCmds = {};
+
+    render();
+    gemSt.textContent = `✓ 已更新 ${items.length} 筆`;
+    gemSt.className = 'status-txt ok';
+  } catch (err) {
+    stopTimer();
+    gemSt.textContent = '錯誤：' + err.message;
+    gemSt.className = 'status-txt err';
+  }
+  btn.disabled = false;
+}
+
+// ── CALENDAR ──────────────────────────────────────────
+async function doCalendar() {
+  syncLive();
+  const url = getScriptUrl();
+  if (!url) { alert('請先設定 Apps Script URL'); return; }
+
+  const confirmed = items.filter(i=>i.action==='confirm');
+  // ask 沒選就預設 yellow
+  confirmed.forEach(i => { if (i.color === 'ask') i.color = 'yellow'; });
+
+  // miss = 新建，ok + calEventId = 更新
+  const toProcess = confirmed.filter(i => i.calStatus === 'miss' || (i.calStatus === 'ok' && i.calEventId));
+  if (!toProcess.length) { alert('沒有需要處理的行事曆事件'); return; }
+
+  if (!confirm(
+    `處理 ${toProcess.length} 筆到好咖行事曆：\n` +
+    toProcess.map(i => `${i.calStatus==='miss'?'🆕':'✏️'} ${i.color==='yellow'?'🟡':'🟣'} ${i.title} [${i.date}]`).join('\n') +
+    '\n\n確定？')) return;
+
+  setStatus('處理行事曆事件中…', 'load');
+  let ok = 0;
+  const failures = [];
+
+  for (const item of toProcess) {
+    try {
+      let dates;
+      if (item.startISO) {
+        if (item.allDay) {
+          // 整日：只取日期部分，避免時區問題
+          const dateStr = item.startISO.slice(0, 10); // YYYY-MM-DD
+          const parts = dateStr.split('-').map(Number);
+          const st = new Date(parts[0], parts[1]-1, parts[2]);
+          let en;
+          if (item.endISO) {
+            const ep = item.endISO.slice(0,10).split('-').map(Number);
+            en = new Date(ep[0], ep[1]-1, ep[2]);
+          } else {
+            en = new Date(parts[0], parts[1]-1, parts[2]);
+            en.setDate(en.getDate() + 1);
+          }
+          dates = { start: fmtDateOnly(st), end: fmtDateOnly(en), allDay: true };
+        } else {
+          const st = new Date(item.startISO);
+          const en = item.endISO ? new Date(item.endISO) : new Date(st.getTime() + 3600000);
+          dates = { start: st, end: en, allDay: false };
+        }
+      } else {
+        dates = parseItemDate(item.date);
+      }
+      if (!dates) { failures.push(`${item.title}：無法解析日期「${item.date}」`); continue; }
+
+      const isUpdate = item.calStatus === 'ok' && item.calEventId;
+      const colorToSend = item.color !== 'ask' ? item.color
+        : isUpdate ? null
+        : (item.calColor || 'yellow');
+      const params = new URLSearchParams({
+        action: isUpdate ? 'updateEvent' : 'addEvent',
+        title:  encodeURIComponent(item.title),
+        start:  dates.allDay ? (typeof dates.start === 'string' ? dates.start : fmtDateOnly(dates.start)) : dates.start.toISOString(),
+        end:    dates.allDay ? (typeof dates.end   === 'string' ? dates.end   : fmtDateOnly(dates.end))   : dates.end.toISOString(),
+        allDay: dates.allDay ? '1' : '0',
+        desc:   encodeURIComponent(item.calNote || '')
+      });
+      if (colorToSend) params.set('color', colorToSend);
+      if (isUpdate) params.set('eventId', encodeURIComponent(item.calEventId));
+
+      const res  = await fetch(`${url}?${params}`);
+      const data = await res.json();
+      if (data.ok) {
+        item.calStatus  = 'ok';
+        item.calEventId = data.eventId;
+        item.calNote    = `✓ ${isUpdate ? '已更新' : '已建立'}：${item.title}`;
+        ok++;
+      } else {
+        failures.push(`${item.title}：${data.error || 'Apps Script 回傳失敗'}`);
+      }
+    } catch(e) {
+      failures.push(`${item.title}：${e.message || '網路錯誤'}`);
+    }
+  }
+
+  render();
+  if (failures.length) {
+    setStatus(`行事曆：處理 ${ok} 筆，${failures.length} 筆失敗`, ok > 0 ? 'ok' : 'err');
+    alert(`以下 ${failures.length} 筆失敗：\n\n${failures.join('\n')}`);
+  } else {
+    setStatus(`行事曆：處理 ${ok} 筆完成`, 'ok');
+  }
+}
+
+function setDateText(id, val) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  item.date = val;
+  const d = parseItemDate(val);
+  if (d) {
+    item.startISO  = d.isDateOnly ? null : d.start.toISOString();
+    item.endISO    = d.isDateOnly ? null : d.end.toISOString();
+    item.allDay    = d.allDay;
+    item._dateOnly = d.isDateOnly ? { start: d.start, end: d.end } : null;
+  } else {
+    item.startISO  = null;
+    item.endISO    = null;
+    item.allDay    = true;
+    item._dateOnly = null;
+  }
+}
+
+function fmtDateOnly(d) {
+  if (typeof d === 'string') return d; // 已經是 YYYY-MM-DD 就直接用
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function parseItemDate(s) {
+  if (!s) return null;
+  s = s.trim();
+  if (!s || s.includes('進行中') || s.includes('本週')) {
+    const d = new Date();
+    return { start: d, end: d, allDay: true, isDateOnly: true };
+  }
+
+  const yr = new Date().getFullYear();
+
+  // 4/2 14:00 - 4/3 15:00（跨天有時間）
+  let m = s.match(/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})\s*[-–~]\s*(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
+  if (m) {
+    const st = new Date(yr, +m[1]-1, +m[2], +m[3], +m[4]);
+    const en = new Date(yr, +m[5]-1, +m[6], +m[7], +m[8]);
+    return { start: st, end: en, allDay: false };
+  }
+
+  // 4/2-4/3 或 4/2~4/3（整日跨天）
+  m = s.match(/(\d{1,2})\/(\d{1,2})\s*[-–~]\s*(\d{1,2})\/(\d{1,2})/);
+  if (m) {
+    const st = new Date(yr, +m[1]-1, +m[2]);
+    const en = new Date(yr, +m[3]-1, +m[4]+1);
+    return { start: st, end: en, allDay: true, isDateOnly: true };
+  }
+
+  // 4/2-3（同月跨天）
+  m = s.match(/(\d{1,2})\/(\d{1,2})\s*[-–~]\s*(\d{1,2})(?!\d)/);
+  if (m) {
+    const st = new Date(yr, +m[1]-1, +m[2]);
+    const en = new Date(yr, +m[1]-1, +m[3]);
+    en.setDate(en.getDate() + 1);
+    return { start: st, end: en, allDay: true, isDateOnly: true };
+  }
+
+  // 4/3 15:00（單天有時間）
+  m = s.match(/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
+  if (m) {
+    const h = +m[3], mi = +m[4];
+    const st = new Date(yr, +m[1]-1, +m[2], h, mi);
+    const en = new Date(yr, +m[1]-1, +m[2], h+1, mi);
+    return { start: st, end: en, allDay: false };
+  }
+
+  // 4/3（單天整日）
+  m = s.match(/(\d{1,2})\/(\d{1,2})/);
+  if (m) {
+    const st = new Date(yr, +m[1]-1, +m[2]);
+    const en = new Date(yr, +m[1]-1, +m[2]);
+    en.setDate(en.getDate() + 1);
+    return { start: st, end: en, allDay: true, isDateOnly: true };
+  }
+
+  return null;
+}
+
+// ── REMINDERS ─────────────────────────────────────────
+function doReminders() {
+  syncLive();
+  const confirmed = items.filter(i=>i.action==='confirm');
+  if (!confirmed.length) { alert('請先勾選（✓）項目'); return; }
+
+  const shoot = confirmed.filter(i=>i.cat==='拍攝');
+  const work  = confirmed.filter(i=>i.cat==='工作');
+
+  if (!confirm(
+    `📱 新增至 Mac 提醒\n\n` +
+    `🎬 拍攝（${shoot.length}）：${shoot.map(i=>i.title).join('、') || '無'}\n\n` +
+    `🗂 工作（${work.length}）：${work.map(i=>i.title).join('、') || '無'}\n\n` +
+    `確定？（需要已安裝「好咖提醒事項」捷徑）`)) return;
+
+  // Call Apple Shortcut via URL scheme
+  const payload = JSON.stringify(confirmed.map(i => {
+    let startISO = i.startISO || null;
+    let timeStr  = '';
+    if (!startISO) {
+      const d = parseItemDate(i.date);
+      if (d) startISO = d.start.toISOString();
+    }
+    if (startISO) {
+      const d = new Date(startISO);
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const dd = String(d.getDate()).padStart(2,'0');
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mi = String(d.getMinutes()).padStart(2,'0');
+      timeStr = ` ｜${mm}/${dd} ${hh}:${mi}`;
+    }
+    return { title: i.title + timeStr, cat: i.cat };
+  }));
+  const shortcutName = encodeURIComponent('好咖提醒事項');
+  window.location.href = `shortcuts://run-shortcut?name=${shortcutName}&input=text&text=${encodeURIComponent(payload)}`;
+}
+
+// ── EXPORT ────────────────────────────────────────────
+function exportJSON() {
+  syncLive();
+  const confirmed = items.filter(i=>i.action==='confirm');
+  const out = {
+    exportTime: new Date().toLocaleString('zh-TW'),
+    addRequests: Object.entries(addCmds).filter(([,v])=>v&&v.trim())
+      .map(([proj,cmd])=>({ proj, instruction: cmd })),
+    items: confirmed.map(i=>({
+      id:i.id, proj:i.proj, cat:i.cat, color:i.color,
+      title:i.title, date:i.date, calStatus:i.calStatus,
+      instruction: i.cmd||null
+    }))
+  };
+  const blob = new Blob([JSON.stringify(out,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'borry_tasks.json'; a.click();
+}
+
+// ── INIT ──────────────────────────────────────────────
+loadConfig();
+</script>
+</body>
+</html>
