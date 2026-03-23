@@ -238,26 +238,50 @@ select {
 @media (max-width: 640px) {
   body { padding: 12px 10px; font-size: 12px; }
 
-  /* Borry：顏色 + 工作 + 內容 + 打勾 + 鉛筆 + 叉叉 */
   .item-row {
-    grid-template-columns: 44px 42px 1fr 36px 36px 36px !important;
-  }
-  /* 其他人：顏色 + 內容 + 打勾 + 鉛筆 + 叉叉 */
-  .item-row.no-cat {
-    grid-template-columns: 44px 1fr 36px 36px 36px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px;
   }
 
-  .content-area { grid-column: 1 / -1; grid-row: 2; }
-
+  /* 第一行：顏色選單 + (工作) + 三個按鈕 靠右 */
+  .item-row .sel-color,
+  .item-row .sel-cat {
+    order: 1;
+  }
+  .item-row .content-area {
+    order: 3;
+    width: 100%;
+  }
   .item-row .cal-status {
-    grid-column: 1 / -1; grid-row: 3;
-    flex-direction: row; align-items: flex-start; gap: 8px;
-    border-top: 1px solid #1a1a1a; padding-top: 5px; margin-top: 2px;
-    min-width: 0;
+    order: 4;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 5px;
   }
-  .cal-note { font-size: 9px; text-align: left; }
+  .item-row .btn-confirm,
+  .item-row .btn-edit,
+  .item-row .btn-x {
+    order: 2;
+    width: 36px; height: 36px; font-size: 14px;
+  }
 
-  .btn-confirm, .btn-edit, .btn-x { width: 36px; height: 36px; font-size: 14px; }
+  /* 把顏色、工作、三個按鈕排成一行 */
+  .item-row {
+    flex-wrap: wrap;
+  }
+  .item-row .sel-color { flex: 0 0 auto; }
+  .item-row .sel-cat   { flex: 0 0 auto; }
+  .item-row .btn-confirm,
+  .item-row .btn-edit,
+  .item-row .btn-x { flex: 0 0 auto; margin-left: auto; }
+  .item-row .btn-edit,
+  .item-row .btn-x { margin-left: 4px; }
+
+  .cal-note { font-size: 9px; text-align: left; }
 
   .filter-btn { padding: 5px 12px; font-size: 11px; }
   .run-btn { font-size: 12px; padding: 9px 14px; }
@@ -267,7 +291,6 @@ select {
   .action-btn { padding: 8px 12px; font-size: 11px; }
   .config-input { font-size: 12px; }
   select { font-size: 10px; padding: 3px 2px; }
-  .sel-color { min-width: 44px; }
 }
 .empty-state {
   text-align: center; padding: 40px 20px; color: #2a2a2a; font-size: 13px;
