@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -16,13 +17,13 @@ h1 { font-size: 16px; font-weight: 700; color: #fff; }
 
 /* ── Config ── */
 .config-bar {
-  display: flex; align-items: center; gap: 8px;
-  margin: 12px 0 8px; flex-wrap: wrap;
+display: flex; align-items: center; gap: 8px;
+margin: 12px 0 8px; flex-wrap: wrap;
 }
 .config-input {
-  flex: 1; min-width: 260px; background: #0d0d0d; border: 1px solid #222;
-  border-radius: 7px; color: #555; font-size: 10.5px; padding: 6px 10px;
-  font-family: inherit; outline: none;
+flex: 1; min-width: 260px; background: #0d0d0d; border: 1px solid #222;
+border-radius: 7px; color: #555; font-size: 10.5px; padding: 6px 10px;
+font-family: inherit; outline: none;
 }
 .config-input:focus { border-color: #333; color: #888; }
 .config-input::placeholder { color: #2a2a2a; }
@@ -30,14 +31,14 @@ h1 { font-size: 16px; font-weight: 700; color: #fff; }
 
 /* ── Run bar ── */
 .run-bar {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 0 14px; border-bottom: 1px solid #1a1a1a;
-  margin-bottom: 14px; flex-wrap: wrap;
+display: flex; align-items: center; gap: 10px;
+padding: 10px 0 14px; border-bottom: 1px solid #1a1a1a;
+margin-bottom: 14px; flex-wrap: wrap;
 }
 .run-btn {
-  padding: 8px 20px; border-radius: 9px; font-size: 12px; font-weight: 700;
-  cursor: pointer; border: 1px solid #22c55e; background: #0c1a10; color: #4ade80;
-  transition: all 0.15s;
+padding: 8px 20px; border-radius: 9px; font-size: 12px; font-weight: 700;
+cursor: pointer; border: 1px solid #22c55e; background: #0c1a10; color: #4ade80;
+transition: all 0.15s;
 }
 .run-btn:hover { background: #14532d; }
 .run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -48,57 +49,57 @@ h1 { font-size: 16px; font-weight: 700; color: #fff; }
 
 /* ── Notice ── */
 .notice {
-  background: #1a1200; border: 1px solid #6b3a00; border-radius: 8px;
-  font-size: 11px; color: #f59e0b;
-  margin-bottom: 10px; display: none; overflow: hidden;
+background: #1a1200; border: 1px solid #6b3a00; border-radius: 8px;
+font-size: 11px; color: #f59e0b;
+margin-bottom: 10px; display: none; overflow: hidden;
 }
 .notice.show { display: block; }
 .notice-header {
-  padding: 7px 14px; cursor: pointer; user-select: none;
-  display: flex; align-items: center; justify-content: space-between;
-  font-weight: 600;
+padding: 7px 14px; cursor: pointer; user-select: none;
+display: flex; align-items: center; justify-content: space-between;
+font-weight: 600;
 }
 .notice-header:hover { background: rgba(255,255,255,0.03); }
 .notice-list {
-  display: none; border-top: 1px solid #6b3a00;
-  padding: 6px 14px 10px;
+display: none; border-top: 1px solid #6b3a00;
+padding: 6px 14px 10px;
 }
 .notice-list.open { display: block; }
 .notice-item {
-  padding: 4px 0; border-bottom: 1px solid #2a1800;
-  font-size: 10.5px; line-height: 1.5;
+padding: 4px 0; border-bottom: 1px solid #2a1800;
+font-size: 10.5px; line-height: 1.5;
 }
 .notice-item:last-child { border-bottom: none; }
 
 /* ── Project block ── */
 .proj-block { margin-bottom: 18px; }
 .proj-header {
-  font-size: 10px; font-weight: 800; letter-spacing: 1.2px;
-  padding: 5px 10px; border-bottom: 1px solid #1e1e1e;
-  margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+font-size: 10px; font-weight: 800; letter-spacing: 1.2px;
+padding: 5px 10px; border-bottom: 1px solid #1e1e1e;
+margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
 }
 .proj-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
 
 /* ── Item row ── */
 .item-row {
-  display: grid;
-  grid-template-columns: 48px 46px 1fr 120px 26px 26px 26px;
-  gap: 5px; align-items: start;
-  padding: 8px 10px; border-radius: 7px;
-  border: 1px solid #202020; background: #161616;
-  margin-bottom: 3px; transition: border-color 0.15s, background 0.15s;
+display: grid;
+grid-template-columns: 48px 46px 1fr 120px 26px 26px 26px;
+gap: 5px; align-items: start;
+padding: 8px 10px; border-radius: 7px;
+border: 1px solid #202020; background: #161616;
+margin-bottom: 3px; transition: border-color 0.15s, background 0.15s;
 }
 .item-row.no-cat {
-  grid-template-columns: 48px 1fr 120px 26px 26px 26px;
+grid-template-columns: 48px 1fr 120px 26px 26px 26px;
 }
 .item-row.confirmed { border-color: #1e4a2a; background: #0c1a10; }
 .item-row.ignored   { opacity: 0.28; }
 .item-row.missing   { border-color: #3d1010; }
 
 select {
-  appearance: none; border-radius: 6px; font-size: 10px; font-weight: 600;
-  padding: 4px 3px; cursor: pointer; width: 100%; text-align: center;
-  border: 1px solid #2a2a2a;
+appearance: none; border-radius: 6px; font-size: 10px; font-weight: 600;
+padding: 4px 3px; cursor: pointer; width: 100%; text-align: center;
+border: 1px solid #2a2a2a;
 }
 .sel-cat.work  { background: #0a1a0d; color: #6ee7a0; border-color: #1a3a20; }
 .sel-cat.shoot { background: #0d1a30; color: #7dd3fc; border-color: #1e3a5f; }
@@ -108,31 +109,31 @@ select {
 
 .content-area { display: flex; flex-direction: column; gap: 3px; overflow: hidden; min-width: 0; }
 .cal-title-input {
-  width: 100%; background: transparent; border: none;
-  border-bottom: 1px solid #2a2a2a; color: #d0d0d0;
-  font-size: 11.5px; font-weight: 500; font-family: inherit;
-  padding: 1px 0; outline: none; min-width: 0;
+width: 100%; background: transparent; border: none;
+border-bottom: 1px solid #2a2a2a; color: #d0d0d0;
+font-size: 11.5px; font-weight: 500; font-family: inherit;
+padding: 1px 0; outline: none; min-width: 0;
 }
 .cal-title-input:focus { border-bottom-color: #3b82f6; }
 .date-input {
-  background: transparent; border: none;
-  border-bottom: 1px dashed #252525; color: #555;
-  font-size: 10px; font-family: inherit;
-  padding: 1px 0; outline: none; width: 100%;
-  color-scheme: dark;
+background: transparent; border: none;
+border-bottom: 1px dashed #252525; color: #555;
+font-size: 10px; font-family: inherit;
+padding: 1px 0; outline: none; width: 100%;
+color-scheme: dark;
 }
 .date-input:focus { border-bottom-color: #3b82f6; color: #aaa; }
 .note-toggle {
-  font-size: 9.5px; color: #333; cursor: pointer; user-select: none;
-  display: inline-block;
+font-size: 9.5px; color: #333; cursor: pointer; user-select: none;
+display: inline-block;
 }
 .note-toggle:hover { color: #666; }
 .note-toggle.has { color: #4a6a58; }
 .note-input {
-  display: none; width: 100%; margin-top: 3px;
-  background: #0e1a12; border: 1px solid #1a3020; border-radius: 5px;
-  color: #5a8a68; font-size: 10.5px; padding: 5px 8px; resize: none;
-  font-family: inherit; outline: none; line-height: 1.6; min-height: 38px;
+display: none; width: 100%; margin-top: 3px;
+background: #0e1a12; border: 1px solid #1a3020; border-radius: 5px;
+color: #5a8a68; font-size: 10.5px; padding: 5px 8px; resize: none;
+font-family: inherit; outline: none; line-height: 1.6; min-height: 38px;
 }
 .note-input.open { display: block; }
 
@@ -146,10 +147,10 @@ select {
 
 /* Buttons */
 .btn-confirm, .btn-edit, .btn-x {
-  width: 26px; height: 26px; border-radius: 6px;
-  border: 1px solid #2a2a2a; background: #1a1a1a; cursor: pointer;
-  font-size: 12px; display: flex; align-items: center; justify-content: center;
-  transition: all 0.12s; user-select: none;
+width: 26px; height: 26px; border-radius: 6px;
+border: 1px solid #2a2a2a; background: #1a1a1a; cursor: pointer;
+font-size: 12px; display: flex; align-items: center; justify-content: center;
+transition: all 0.12s; user-select: none;
 }
 .btn-confirm:hover { background: #14532d; border-color: #22c55e; }
 .btn-confirm.on    { background: #14532d; border-color: #22c55e; }
@@ -165,25 +166,25 @@ select {
 .add-toggle:hover { color: #888; }
 .add-toggle.has-content { color: #3b82f6; }
 .add-cmd-input {
-  display: none; margin-top: 6px;
-  width: 100%; background: #08101c; border: 1px solid #1e3358; border-radius: 5px;
-  color: #7dd3fc; font-size: 11px; padding: 5px 8px; resize: none;
-  font-family: inherit; outline: none; line-height: 1.5; min-height: 34px;
+display: none; margin-top: 6px;
+width: 100%; background: #08101c; border: 1px solid #1e3358; border-radius: 5px;
+color: #7dd3fc; font-size: 11px; padding: 5px 8px; resize: none;
+font-family: inherit; outline: none; line-height: 1.5; min-height: 34px;
 }
 .add-cmd-input.open { display: block; }
 .add-cmd-input::placeholder { color: #1e3050; }
 
 /* ── Claude Chat section ── */
 .chat-section {
-  margin-top: 22px; border: 1px solid #1e3a5f; border-radius: 10px;
-  background: #080f1c; padding: 14px;
+margin-top: 22px; border: 1px solid #1e3a5f; border-radius: 10px;
+background: #080f1c; padding: 14px;
 }
 .chat-section h3 { font-size: 11px; color: #7dd3fc; font-weight: 600; margin-bottom: 5px; }
 .chat-section p  { font-size: 10px; color: #2a4a6a; margin-bottom: 10px; line-height: 1.6; }
 .chat-btns { display: flex; gap: 8px; flex-wrap: wrap; }
 .chat-btn {
-  padding: 7px 15px; border-radius: 8px; font-size: 11.5px; font-weight: 600;
-  cursor: pointer; border: 1px solid; transition: all 0.15s;
+padding: 7px 15px; border-radius: 8px; font-size: 11.5px; font-weight: 600;
+cursor: pointer; border: 1px solid; transition: all 0.15s;
 }
 .chat-btn-send { background: #0a1a30; border-color: #3b82f6; color: #93c5fd; }
 .chat-btn-send:hover { background: #122040; }
@@ -195,37 +196,37 @@ select {
 .apply-box.open { display: block; }
 .apply-label { font-size: 9.5px; color: #3b82f6; margin-bottom: 5px; }
 .apply-input {
-  width: 100%; background: #06080f; border: 1px solid #1a2a4a; border-radius: 6px;
-  color: #7dd3fc; font-size: 10.5px; padding: 7px 9px; resize: vertical;
-  font-family: monospace; outline: none; min-height: 60px; line-height: 1.5;
+width: 100%; background: #06080f; border: 1px solid #1a2a4a; border-radius: 6px;
+color: #7dd3fc; font-size: 10.5px; padding: 7px 9px; resize: vertical;
+font-family: monospace; outline: none; min-height: 60px; line-height: 1.5;
 }
 .apply-btn {
-  margin-top: 6px; padding: 6px 16px; border-radius: 7px; font-size: 11px;
-  font-weight: 600; cursor: pointer; background: #14532d;
-  border: 1px solid #22c55e; color: #4ade80;
+margin-top: 6px; padding: 6px 16px; border-radius: 7px; font-size: 11px;
+font-weight: 600; cursor: pointer; background: #14532d;
+border: 1px solid #22c55e; color: #4ade80;
 }
 
 /* Global note */
 .global-cmd {
-  margin-top: 16px; border: 1px solid #1e2030; border-radius: 10px;
-  background: #0d0d1a; padding: 12px;
+margin-top: 16px; border: 1px solid #1e2030; border-radius: 10px;
+background: #0d0d1a; padding: 12px;
 }
 .global-cmd h3 { font-size: 11px; color: #555; font-weight: 600; margin-bottom: 5px; }
 .global-input {
-  width: 100%; background: #08080f; border: 1px solid #1a1a2a; border-radius: 7px;
-  color: #8080c0; font-size: 12px; padding: 9px 12px; resize: vertical;
-  min-height: 44px; font-family: inherit; outline: none; line-height: 1.6;
+width: 100%; background: #08080f; border: 1px solid #1a1a2a; border-radius: 7px;
+color: #8080c0; font-size: 12px; padding: 9px 12px; resize: vertical;
+min-height: 44px; font-family: inherit; outline: none; line-height: 1.6;
 }
 .global-input::placeholder { color: #1a1a30; }
 
 /* Bottom bar */
 .bottom-bar {
-  margin-top: 16px; padding-top: 14px; border-top: 1px solid #1e1e1e;
-  display: flex; gap: 8px; flex-wrap: wrap;
+margin-top: 16px; padding-top: 14px; border-top: 1px solid #1e1e1e;
+display: flex; gap: 8px; flex-wrap: wrap;
 }
 .action-btn {
-  padding: 9px 18px; border-radius: 9px; border: 1px solid;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+padding: 9px 18px; border-radius: 9px; border: 1px solid;
+font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
 }
 .btn-yellow { background: #1c1200; border-color: #b45309; color: #fcd34d; }
 .btn-yellow:hover { background: #241800; }
@@ -236,102 +237,84 @@ select {
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  body { padding: 12px 10px; font-size: 12px; }
+body { padding: 12px 10px; font-size: 12px; }
 
-  .item-row {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 6px;
-  }
+.item-row {
+grid-template-columns: 44px 42px 1fr 36px 36px 36px !important;
+grid-template-rows: auto auto auto !important;
+grid-template-areas:
+“color cat . confirm edit x”
+“content content content content content content”
+“status status status status status status” !important;
+}
+.item-row.no-cat {
+grid-template-columns: 44px 1fr 36px 36px 36px !important;
+grid-template-areas:
+“color . confirm edit x”
+“content content content content content”
+“status status status status status” !important;
+}
 
-  /* 第一行：顏色選單 + (工作) + 三個按鈕 靠右 */
-  .item-row .sel-color,
-  .item-row .sel-cat {
-    order: 1;
-  }
-  .item-row .content-area {
-    order: 3;
-    width: 100%;
-  }
-  .item-row .cal-status {
-    order: 4;
-    width: 100%;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 8px;
-    border-top: 1px solid #1a1a1a;
-    padding-top: 5px;
-  }
-  .item-row .btn-confirm,
-  .item-row .btn-edit,
-  .item-row .btn-x {
-    order: 2;
-    width: 36px; height: 36px; font-size: 14px;
-  }
+.item-row .sel-color   { grid-area: color; }
+.item-row .sel-cat     { grid-area: cat; }
+.item-row .content-area { grid-area: content; }
+.item-row .cal-status  { grid-area: status; flex-direction: row; align-items: flex-start; gap: 8px; border-top: 1px solid #1a1a1a; padding-top: 5px; }
+.item-row .btn-confirm { grid-area: confirm; }
+.item-row .btn-edit    { grid-area: edit; }
+.item-row .btn-x       { grid-area: x; }
 
-  /* 把顏色、工作、三個按鈕排成一行 */
-  .item-row {
-    flex-wrap: wrap;
-  }
-  .item-row .sel-color { flex: 0 0 auto; }
-  .item-row .sel-cat   { flex: 0 0 auto; }
-  .item-row .btn-confirm,
-  .item-row .btn-edit,
-  .item-row .btn-x { flex: 0 0 auto; margin-left: auto; }
-  .item-row .btn-edit,
-  .item-row .btn-x { margin-left: 4px; }
-
-  .cal-note { font-size: 9px; text-align: left; }
-
-  .filter-btn { padding: 5px 12px; font-size: 11px; }
-  .run-btn { font-size: 12px; padding: 9px 14px; }
-  .help-item { font-size: 11px; }
-  .help-icon { min-width: 50px; }
-  .bottom-bar { gap: 6px; }
-  .action-btn { padding: 8px 12px; font-size: 11px; }
-  .config-input { font-size: 12px; }
-  select { font-size: 10px; padding: 3px 2px; }
+.btn-confirm, .btn-edit, .btn-x { width: 36px; height: 36px; font-size: 14px; }
+.cal-note { font-size: 9px; text-align: left; }
+.filter-btn { padding: 5px 12px; font-size: 11px; }
+.run-btn { font-size: 12px; padding: 9px 14px; }
+.help-item { font-size: 11px; }
+.help-icon { min-width: 50px; }
+.bottom-bar { gap: 6px; }
+.action-btn { padding: 8px 12px; font-size: 11px; }
+.config-input { font-size: 12px; }
+select { font-size: 10px; padding: 3px 2px; }
 }
 .empty-state {
-  text-align: center; padding: 40px 20px; color: #2a2a2a; font-size: 13px;
+text-align: center; padding: 40px 20px; color: #2a2a2a; font-size: 13px;
 }
 
 /* Help bar */
 .help-bar {
-  margin-bottom: 10px; border: 1px solid #1e1e1e; border-radius: 8px;
-  background: #0d0d0d; overflow: hidden;
+margin-bottom: 10px; border: 1px solid #1e1e1e; border-radius: 8px;
+background: #0d0d0d; overflow: hidden;
 }
 .help-toggle {
-  padding: 7px 12px; font-size: 10.5px; color: #444; cursor: pointer;
-  user-select: none; display: flex; align-items: center; gap: 6px;
+padding: 7px 12px; font-size: 10.5px; color: #444; cursor: pointer;
+user-select: none; display: flex; align-items: center; gap: 6px;
 }
 .help-toggle:hover { color: #666; }
 .help-content { padding: 10px 14px 14px; border-top: 1px solid #1a1a1a; }
 .help-grid { display: flex; flex-direction: column; gap: 8px; }
 .help-item {
-  display: flex; gap: 10px; align-items: flex-start;
-  font-size: 10.5px; color: #555; line-height: 1.6;
+display: flex; gap: 10px; align-items: flex-start;
+font-size: 10.5px; color: #555; line-height: 1.6;
 }
 .help-icon {
-  color: #3a3a3a; white-space: nowrap; min-width: 60px;
-  font-size: 10px; padding-top: 1px;
+color: #3a3a3a; white-space: nowrap; min-width: 60px;
+font-size: 10px; padding-top: 1px;
 }
 .help-item b { color: #666; }
 
 /* Filter bar */
 .filter-bar {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 12px; flex-wrap: wrap;
+display: flex; align-items: center; gap: 8px;
+margin-bottom: 12px; flex-wrap: wrap;
 }
 .filter-btns { display: flex; gap: 5px; flex-wrap: wrap; }
 .filter-btn {
-  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
-  cursor: pointer; border: 1px solid #2a2a2a; background: #1a1a1a; color: #555;
-  transition: all 0.12s;
+padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+cursor: pointer; border: 1px solid #2a2a2a; background: #1a1a1a; color: #555;
+transition: all 0.12s;
 }
 .filter-btn:hover { border-color: #444; color: #aaa; }
 .filter-btn.active { background: #14532d; border-color: #22c55e; color: #4ade80; }
 </style>
+
 </head>
 <body>
 
@@ -339,6 +322,7 @@ select {
 <p class="sub" id="subtitle">WIP × 行事曆交叉比對</p>
 
 <!-- Config -->
+
 <div class="config-bar">
   <span class="config-label">API Key：</span>
   <input class="config-input" id="geminiKey" type="password"
@@ -347,12 +331,14 @@ select {
 </div>
 
 <!-- Run -->
+
 <div class="run-bar">
   <button class="run-btn" id="runBtn" onclick="runSync()">🔄 Run — 智慧讀取 WIP × 行事曆</button>
   <span class="status-txt" id="statusTxt">尚未載入</span>
 </div>
 
 <!-- 說明列 -->
+
 <div class="help-bar">
   <div class="help-toggle" onclick="toggleHelp()">
     <span id="helpArrow">▸</span> 使用說明
@@ -373,21 +359,23 @@ select {
   </div>
 </div>
 
-
 <div class="filter-bar" id="filterBar" style="display:none">
   <span class="config-label">篩選：</span>
   <div class="filter-btns" id="filterBtns"></div>
 </div>
 
 <!-- Notice -->
+
 <div class="notice" id="notice"></div>
 
 <!-- Panel -->
+
 <div id="panel">
   <div class="empty-state">按 Run 載入資料</div>
 </div>
 
 <!-- Gemini 指令欄 -->
+
 <div class="chat-section">
   <h3>✨ 給 Gemini 下指令</h3>
   <p>用 ✏ 在各項目寫修改指令，或在下方輸入整體指令（加事件、改標題、調整日期…），送出後 Gemini 直接更新清單。</p>
@@ -400,6 +388,7 @@ select {
 </div>
 
 <!-- Bottom bar -->
+
 <div class="bottom-bar">
   <button class="action-btn btn-yellow" onclick="doCalendar()">🟡 新增至好咖行事曆</button>
   <button class="action-btn btn-blue" id="remindersBtn" onclick="doReminders()" style="display:none">📱 新增至 Mac 提醒</button>
@@ -945,507 +934,511 @@ function makeRow(item) {
       <textarea class="note-input ${isNoteOpen?'open':''}" id="note-${item.id}" rows="2"
         oninput="items.find(i=>i.id===${item.id}).calNote=this.value"
       >${esc(item.calNote||'')}</textarea>
-    </div>
 
-    <div class="cal-status" onclick="toggleCmd(${item.id})" style="cursor:pointer;position:relative" title="點擊選取對應行事曆事件">
-      ${item.calStatus==='ok'
-        ? `<span class="badge badge-ok">✓ 已建</span>
-           <button onclick="event.stopPropagation();clearCalMatch(${item.id})" style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;border:none;background:#450a0a;color:#f87171;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>`
-        : '<span class="badge badge-miss">待新增</span>'}
-      <div class="cal-note ${item.calStatus==='miss'?'miss':''}">${esc(item.calNote)}</div>
-      ${isCmdOpen ? `
-      <div style="margin-top:4px" id="picker-${item.id}" onclick="event.stopPropagation()">
-        <div style="font-size:9px;color:#2563eb;margin-bottom:5px">🗓 選取對應的行事曆事件</div>
-        <div id="picker-list-${item.id}" style="font-size:10px;color:#555">載入中…</div>
-      </div>` : ''}
-    </div>
+```
+</div>
 
-    <button class="btn-confirm ${item.action==='confirm'?'on':''}"
-      onclick="toggleConfirm(${item.id})" title="確認">✓</button>
-    <button class="btn-edit ${item.cmd?'active':''}"
-      onclick="toggleGeminiCmd(${item.id})" title="給 Gemini 指令">✏</button>
-    <button class="btn-x ${item.action==='ignore'?'on':''}"
-      onclick="toggleIgnore(${item.id})" title="忽略">✕</button>
-  `;
+<div class="cal-status" onclick="toggleCmd(${item.id})" style="cursor:pointer;position:relative" title="點擊選取對應行事曆事件">
+  ${item.calStatus==='ok'
+    ? `<span class="badge badge-ok">✓ 已建</span>
+       <button onclick="event.stopPropagation();clearCalMatch(${item.id})" style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;border:none;background:#450a0a;color:#f87171;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>`
+    : '<span class="badge badge-miss">待新增</span>'}
+  <div class="cal-note ${item.calStatus==='miss'?'miss':''}">${esc(item.calNote)}</div>
+  ${isCmdOpen ? `
+  <div style="margin-top:4px" id="picker-${item.id}" onclick="event.stopPropagation()">
+    <div style="font-size:9px;color:#2563eb;margin-bottom:5px">🗓 選取對應的行事曆事件</div>
+    <div id="picker-list-${item.id}" style="font-size:10px;color:#555">載入中…</div>
+  </div>` : ''}
+</div>
 
-  // 展開 Gemini 指令欄（獨立於 picker）
-  if (item._geminiOpen) {
-    const contentArea = div.querySelector('.content-area');
-    const gemDiv = document.createElement('div');
-    gemDiv.style.cssText = 'margin-top:4px';
-    gemDiv.innerHTML = `
-      <div style="font-size:9px;color:#2563eb;margin-bottom:2px">✏ 給 Gemini 指令</div>
-      <textarea style="width:100%;background:#08101c;border:1px solid #1e3358;border-radius:5px;
-        color:#7dd3fc;font-size:11px;padding:5px 8px;resize:none;font-family:inherit;
-        outline:none;line-height:1.5;min-height:34px"
-        id="gcmd-${item.id}" rows="2"
-        placeholder="例：改成 3/27、顏色改紫、人員加石頭…"
-        oninput="items.find(i=>i.id===${item.id}).cmd=this.value"
-      >${esc(item.cmd||'')}</textarea>`;
-    contentArea.appendChild(gemDiv);
-    setTimeout(() => document.getElementById(`gcmd-${item.id}`)?.focus(), 50);
-  }
+<button class="btn-confirm ${item.action==='confirm'?'on':''}"
+  onclick="toggleConfirm(${item.id})" title="確認">✓</button>
+<button class="btn-edit ${item.cmd?'active':''}"
+  onclick="toggleGeminiCmd(${item.id})" title="給 Gemini 指令">✏</button>
+<button class="btn-x ${item.action==='ignore'?'on':''}"
+  onclick="toggleIgnore(${item.id})" title="忽略">✕</button>
+```
 
-  return div;
+`;
+
+// 展開 Gemini 指令欄（獨立於 picker）
+if (item._geminiOpen) {
+const contentArea = div.querySelector(’.content-area’);
+const gemDiv = document.createElement(‘div’);
+gemDiv.style.cssText = ‘margin-top:4px’;
+gemDiv.innerHTML = ` <div style="font-size:9px;color:#2563eb;margin-bottom:2px">✏ 給 Gemini 指令</div> <textarea style="width:100%;background:#08101c;border:1px solid #1e3358;border-radius:5px; color:#7dd3fc;font-size:11px;padding:5px 8px;resize:none;font-family:inherit; outline:none;line-height:1.5;min-height:34px" id="gcmd-${item.id}" rows="2" placeholder="例：改成 3/27、顏色改紫、人員加石頭…" oninput="items.find(i=>i.id===${item.id}).cmd=this.value" >${esc(item.cmd||'')}</textarea>`;
+contentArea.appendChild(gemDiv);
+setTimeout(() => document.getElementById(`gcmd-${item.id}`)?.focus(), 50);
+}
+
+return div;
 }
 
 // ── HELPERS ───────────────────────────────────────────
 function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+return (s||’’).replace(/&/g,’&’).replace(/”/g,’"’).replace(/</g,’<’).replace(/>/g,’>’);
 }
 function fmtTimeShort(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+if (!iso) return ‘’;
+const d = new Date(iso);
+return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
 function setColor(id, val) {
-  const item = items.find(i=>i.id===id); if (item) item.color = val;
+const item = items.find(i=>i.id===id); if (item) item.color = val;
 }
 function setCat(id, val) {
-  const item = items.find(i=>i.id===id); if (item) item.cat = val;
+const item = items.find(i=>i.id===id); if (item) item.cat = val;
 }
 function toggleConfirm(id) {
-  const item = items.find(i=>i.id===id); if (!item) return;
-  item.action = item.action === 'confirm' ? null : 'confirm'; render();
+const item = items.find(i=>i.id===id); if (!item) return;
+item.action = item.action === ‘confirm’ ? null : ‘confirm’; render();
 }
 function toggleIgnore(id) {
-  const item = items.find(i=>i.id===id); if (!item) return;
-  item.action = item.action === 'ignore' ? null : 'ignore'; render();
+const item = items.find(i=>i.id===id); if (!item) return;
+item.action = item.action === ‘ignore’ ? null : ‘ignore’; render();
 }
 function toggleNote(id) {
-  const ta = document.getElementById(`note-${id}`);
-  if (ta) { const item = items.find(i=>i.id===id); if(item) item.calNote = ta.value; }
-  noteOpen[id] = !noteOpen[id]; render();
-  if (noteOpen[id]) setTimeout(()=>{ document.getElementById(`note-${id}`)?.focus(); }, 50);
+const ta = document.getElementById(`note-${id}`);
+if (ta) { const item = items.find(i=>i.id===id); if(item) item.calNote = ta.value; }
+noteOpen[id] = !noteOpen[id]; render();
+if (noteOpen[id]) setTimeout(()=>{ document.getElementById(`note-${id}`)?.focus(); }, 50);
 }
 function toggleCmd(id) {
-  cmdOpen[id] = !cmdOpen[id]; render();
-  if (cmdOpen[id]) setTimeout(() => loadCalPicker(id), 50);
+cmdOpen[id] = !cmdOpen[id]; render();
+if (cmdOpen[id]) setTimeout(() => loadCalPicker(id), 50);
 }
 function clearCalMatch(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  item.calStatus  = 'miss';
-  item.calEventId = null;
-  item.calNote    = '❌ 行事曆完全沒有此筆，需新建';
-  render();
+const item = items.find(i => i.id === id);
+if (!item) return;
+item.calStatus  = ‘miss’;
+item.calEventId = null;
+item.calNote    = ‘❌ 行事曆完全沒有此筆，需新建’;
+render();
 }
 function toggleGeminiCmd(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  const gcmd = document.getElementById(`gcmd-${id}`);
-  if (gcmd) item.cmd = gcmd.value;
-  item._geminiOpen = !item._geminiOpen;
-  render();
+const item = items.find(i => i.id === id);
+if (!item) return;
+const gcmd = document.getElementById(`gcmd-${id}`);
+if (gcmd) item.cmd = gcmd.value;
+item._geminiOpen = !item._geminiOpen;
+render();
 }
 function toggleAdd(proj) {
-  const ta = document.getElementById(`add-${proj}`);
-  if (ta) addCmds[proj] = ta.value;
-  addOpen[proj] = !addOpen[proj]; render();
-  if (addOpen[proj]) setTimeout(()=>{ document.getElementById(`add-${proj}`)?.focus(); }, 50);
+const ta = document.getElementById(`add-${proj}`);
+if (ta) addCmds[proj] = ta.value;
+addOpen[proj] = !addOpen[proj]; render();
+if (addOpen[proj]) setTimeout(()=>{ document.getElementById(`add-${proj}`)?.focus(); }, 50);
 }
 function syncLive() {
-  items.forEach(item => {
-    const c = document.getElementById(`cmd-${item.id}`); if (c) item.cmd = c.value;
-    const n = document.getElementById(`note-${item.id}`); if (n) item.calNote = n.value;
-  });
-  Object.keys(addCmds).forEach(proj => {
-    const t = document.getElementById(`add-${proj}`); if (t) addCmds[proj] = t.value;
-  });
+items.forEach(item => {
+const c = document.getElementById(`cmd-${item.id}`); if (c) item.cmd = c.value;
+const n = document.getElementById(`note-${item.id}`); if (n) item.calNote = n.value;
+});
+Object.keys(addCmds).forEach(proj => {
+const t = document.getElementById(`add-${proj}`); if (t) addCmds[proj] = t.value;
+});
 }
 
 // ── 行事曆選取器 ──────────────────────────────────────
 async function loadCalPicker(id) {
-  const el = document.getElementById(`picker-list-${id}`);
-  if (!el) return;
+const el = document.getElementById(`picker-list-${id}`);
+if (!el) return;
 
-  const item = items.find(i => i.id === id);
-  const url  = getScriptUrl();
+const item = items.find(i => i.id === id);
+const url  = getScriptUrl();
 
-  try {
-    const res  = await fetch(url + '?action=sync');
-    const data = await res.json();
-    const cal  = data.cal || [];
+try {
+const res  = await fetch(url + ‘?action=sync’);
+const data = await res.json();
+const cal  = data.cal || [];
 
-    const ref = item.startISO ? new Date(item.startISO) : new Date();
-    const sorted = [...cal]
-      .filter(e => Math.abs(new Date(e.start) - ref) < 90 * 86400000)
-      .sort((a, b) => Math.abs(new Date(a.start) - ref) - Math.abs(new Date(b.start) - ref))
-      .slice(0, 30);
+```
+const ref = item.startISO ? new Date(item.startISO) : new Date();
+const sorted = [...cal]
+  .filter(e => Math.abs(new Date(e.start) - ref) < 90 * 86400000)
+  .sort((a, b) => Math.abs(new Date(a.start) - ref) - Math.abs(new Date(b.start) - ref))
+  .slice(0, 30);
 
-    if (!sorted.length) { el.textContent = '行事曆沒有事件'; return; }
+if (!sorted.length) { el.textContent = '行事曆沒有事件'; return; }
 
-    el.innerHTML = `
-      <div style="margin-bottom:6px;color:#555;font-size:10px">點選對應事件 / 點❌確定沒有</div>
-      <div style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:3px" id="picker-btns-${id}">
-      </div>`;
+el.innerHTML = `
+  <div style="margin-bottom:6px;color:#555;font-size:10px">點選對應事件 / 點❌確定沒有</div>
+  <div style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:3px" id="picker-btns-${id}">
+  </div>`;
 
-    const container = document.getElementById(`picker-btns-${id}`);
-    sorted.forEach(ev => {
-      const d = ev.start.slice(5,10).replace('-','/');
-      const btn = document.createElement('button');
-      btn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #1e3a5f;background:#08101c;color:#93c5fd;font-size:11px;cursor:pointer;width:100%;line-height:1.4';
-      btn.innerHTML = `<span style="color:#555;font-size:10px;margin-right:6px">${d}</span>${ev.title}`;
-      btn.onmouseover = () => btn.style.background = '#0e1e36';
-      btn.onmouseout  = () => btn.style.background = '#08101c';
-      btn.onclick = () => pickCalEvent(id, ev.id, ev.title, true, ev.color || null);
-      container.appendChild(btn);
-    });
-    const missBtn = document.createElement('button');
-    missBtn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #3d1010;background:#1a0808;color:#f87171;font-size:11px;cursor:pointer;margin-top:4px;width:100%';
-    missBtn.textContent = '❌ 此筆確定沒有行事曆事件';
-    missBtn.onclick = () => pickCalEvent(id, null, null, false);
-    container.appendChild(missBtn);
-  } catch (err) {
-    el.textContent = '載入失敗：' + err.message;
-  }
+const container = document.getElementById(`picker-btns-${id}`);
+sorted.forEach(ev => {
+  const d = ev.start.slice(5,10).replace('-','/');
+  const btn = document.createElement('button');
+  btn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #1e3a5f;background:#08101c;color:#93c5fd;font-size:11px;cursor:pointer;width:100%;line-height:1.4';
+  btn.innerHTML = `<span style="color:#555;font-size:10px;margin-right:6px">${d}</span>${ev.title}`;
+  btn.onmouseover = () => btn.style.background = '#0e1e36';
+  btn.onmouseout  = () => btn.style.background = '#08101c';
+  btn.onclick = () => pickCalEvent(id, ev.id, ev.title, true, ev.color || null);
+  container.appendChild(btn);
+});
+const missBtn = document.createElement('button');
+missBtn.style.cssText = 'text-align:left;padding:6px 10px;border-radius:6px;border:1px solid #3d1010;background:#1a0808;color:#f87171;font-size:11px;cursor:pointer;margin-top:4px;width:100%';
+missBtn.textContent = '❌ 此筆確定沒有行事曆事件';
+missBtn.onclick = () => pickCalEvent(id, null, null, false);
+container.appendChild(missBtn);
+```
+
+} catch (err) {
+el.textContent = ‘載入失敗：’ + err.message;
+}
 }
 
 function pickCalEvent(id, eventId, eventTitle, hasEvent, eventColor) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
+const item = items.find(i => i.id === id);
+if (!item) return;
 
-  if (hasEvent) {
-    item.calStatus  = 'ok';
-    item.calEventId = eventId;
-    item.calColor   = eventColor || null;
-    item.calNote    = `行事曆：「${eventTitle}」`;
-  } else {
-    item.calStatus  = 'miss';
-    item.calEventId = null;
-    item.calNote    = '❌ 行事曆完全沒有此筆，需新建';
-  }
-  item.cmd  = '';
-  cmdOpen[id] = false;
-  render();
+if (hasEvent) {
+item.calStatus  = ‘ok’;
+item.calEventId = eventId;
+item.calColor   = eventColor || null;
+item.calNote    = `行事曆：「${eventTitle}」`;
+} else {
+item.calStatus  = ‘miss’;
+item.calEventId = null;
+item.calNote    = ‘❌ 行事曆完全沒有此筆，需新建’;
+}
+item.cmd  = ‘’;
+cmdOpen[id] = false;
+render();
 }
 // ── GEMINI 指令處理 ────────────────────────────────────
 async function sendToGemini() {
-  const key = getGeminiKey();
-  if (!key) { alert('請先在設定欄填入 Gemini API Key'); return; }
+const key = getGeminiKey();
+if (!key) { alert(‘請先在設定欄填入 Gemini API Key’); return; }
 
-  syncLive();
-  const globalCmd = document.getElementById('globalCmd').value.trim();
-  const itemCmds  = items.filter(i => i.cmd && i.cmd.trim())
-    .map(i => `[id:${i.id}] ${i.title} → ${i.cmd.trim()}`).join('\n');
-  const addReqs   = Object.entries(addCmds).filter(([,v]) => v && v.trim())
-    .map(([proj, cmd]) => `[新增｜${proj}] ${cmd.trim()}`).join('\n');
+syncLive();
+const globalCmd = document.getElementById(‘globalCmd’).value.trim();
+const itemCmds  = items.filter(i => i.cmd && i.cmd.trim())
+.map(i => `[id:${i.id}] ${i.title} → ${i.cmd.trim()}`).join(’\n’);
+const addReqs   = Object.entries(addCmds).filter(([,v]) => v && v.trim())
+.map(([proj, cmd]) => `[新增｜${proj}] ${cmd.trim()}`).join(’\n’);
 
-  if (!globalCmd && !itemCmds && !addReqs) {
-    alert('請先填寫指令（下方輸入欄或各項目的 ✏ 欄位）'); return;
-  }
+if (!globalCmd && !itemCmds && !addReqs) {
+alert(‘請先填寫指令（下方輸入欄或各項目的 ✏ 欄位）’); return;
+}
 
-  const compact = items.map(({ projColor, projText, ...rest }) => rest);
-  const yr = new Date().getFullYear();
+const compact = items.map(({ projColor, projText, …rest }) => rest);
+const yr = new Date().getFullYear();
 
-  const prompt = `你是台灣影視製作公司的專案管理助手，今年是 ${yr} 年。
+const prompt = `你是台灣影視製作公司的專案管理助手，今年是 ${yr} 年。
 
 以下是目前工作清單（JSON）：
 ${JSON.stringify(compact)}
 
-${itemCmds ? `== 各項目修改指令 ==\n${itemCmds}` : ''}
-${addReqs  ? `== 新增項目描述 ==\n${addReqs}` : ''}
-${globalCmd? `== 整體指令 ==\n${globalCmd}` : ''}
+${itemCmds ? `== 各項目修改指令 ==\n${itemCmds}` : ‘’}
+${addReqs  ? `== 新增項目描述 ==\n${addReqs}` : ‘’}
+${globalCmd? `== 整體指令 ==\n${globalCmd}` : ‘’}
 
 請執行以上指令，回傳更新後的完整 JSON 陣列。
 規則：
+
 - 只回傳 JSON 陣列，不含任何說明文字
 - 保留原有項目的 id 不變
-- 新增項目 id 從 ${Math.max(...items.map(i=>i.id), 99) + 1} 開始
+- 新增項目 id 從 ${Math.max(…items.map(i=>i.id), 99) + 1} 開始
 - 每個項目需包含：id, proj, cat, color, title, date, startISO, endISO, allDay, calStatus, calNote, action, cmd
 - startISO / endISO 請轉成 ISO 8601 格式，沒有時間就 null
-- calStatus: 有對應行事曆事件為 "ok"，否則 "miss"`;
-
-  const btn = document.getElementById('geminiBtn');
+- calStatus: 有對應行事曆事件為 “ok”，否則 “miss”`;
+  
+  const btn = document.getElementById(‘geminiBtn’);
   btn.disabled = true;
-  const gemSt = document.getElementById('geminiStatus');
-  gemSt.className = 'status-txt load';
+  const gemSt = document.getElementById(‘geminiStatus’);
+  gemSt.className = ‘status-txt load’;
   startTimer(msg => { gemSt.textContent = msg; });
-
+  
   try {
-    const res = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + key,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
-        })
-      }
-    );
-    stopTimer();
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-
-    let parsed = JSON.parse(data.candidates[0].content.parts[0].text);
-    if (!Array.isArray(parsed)) throw new Error('Gemini 回傳格式異常');
-
-    parsed = parsed.map(item => ({ ...getProjStyle(item.proj), ...item }));
-    items = parsed;
-    nextId = Math.max(...items.map(i => i.id), 99) + 1;
-
-    document.getElementById('globalCmd').value = '';
-    items.forEach(i => { i.cmd = ''; });
-    addCmds = {};
-
-    render();
-    gemSt.textContent = `✓ 已更新 ${items.length} 筆`;
-    gemSt.className = 'status-txt ok';
+  const res = await fetch(
+  ‘https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=’ + key,
+  {
+  method: ‘POST’,
+  headers: { ‘Content-Type’: ‘application/json’ },
+  body: JSON.stringify({
+  contents: [{ parts: [{ text: prompt }] }],
+  generationConfig: { temperature: 0.1, responseMimeType: ‘application/json’ }
+  })
+  }
+  );
+  stopTimer();
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  
+  let parsed = JSON.parse(data.candidates[0].content.parts[0].text);
+  if (!Array.isArray(parsed)) throw new Error(‘Gemini 回傳格式異常’);
+  
+  parsed = parsed.map(item => ({ …getProjStyle(item.proj), …item }));
+  items = parsed;
+  nextId = Math.max(…items.map(i => i.id), 99) + 1;
+  
+  document.getElementById(‘globalCmd’).value = ‘’;
+  items.forEach(i => { i.cmd = ‘’; });
+  addCmds = {};
+  
+  render();
+  gemSt.textContent = `✓ 已更新 ${items.length} 筆`;
+  gemSt.className = ‘status-txt ok’;
   } catch (err) {
-    stopTimer();
-    gemSt.textContent = '錯誤：' + err.message;
-    gemSt.className = 'status-txt err';
+  stopTimer();
+  gemSt.textContent = ‘錯誤：’ + err.message;
+  gemSt.className = ‘status-txt err’;
   }
   btn.disabled = false;
-}
+  }
 
 // ── CALENDAR ──────────────────────────────────────────
 async function doCalendar() {
-  syncLive();
-  const url = getScriptUrl();
-  if (!url) { alert('請先設定 Apps Script URL'); return; }
+syncLive();
+const url = getScriptUrl();
+if (!url) { alert(‘請先設定 Apps Script URL’); return; }
 
-  const confirmed = items.filter(i=>i.action==='confirm');
-  // ask 沒選就預設 yellow
-  confirmed.forEach(i => { if (i.color === 'ask') i.color = 'purple'; });
+const confirmed = items.filter(i=>i.action===‘confirm’);
+// ask 沒選就預設 yellow
+confirmed.forEach(i => { if (i.color === ‘ask’) i.color = ‘purple’; });
 
-  // miss = 新建，ok + calEventId = 更新
-  const toProcess = confirmed.filter(i => i.calStatus === 'miss' || (i.calStatus === 'ok' && i.calEventId));
-  if (!toProcess.length) { alert('沒有需要處理的行事曆事件'); return; }
+// miss = 新建，ok + calEventId = 更新
+const toProcess = confirmed.filter(i => i.calStatus === ‘miss’ || (i.calStatus === ‘ok’ && i.calEventId));
+if (!toProcess.length) { alert(‘沒有需要處理的行事曆事件’); return; }
 
-  if (!confirm(
-    `處理 ${toProcess.length} 筆到好咖行事曆：\n` +
-    toProcess.map(i => `${i.calStatus==='miss'?'🆕':'✏️'} ${i.title} [${i.date}] status=${i.calStatus} id=${i.calEventId||'無'}`).join('\n') +
-    '\n\n確定？')) return;
+if (!confirm(
+`處理 ${toProcess.length} 筆到好咖行事曆：\n` +
+toProcess.map(i => `${i.calStatus==='miss'?'🆕':'✏️'} ${i.title} [${i.date}] status=${i.calStatus} id=${i.calEventId||'無'}`).join(’\n’) +
+‘\n\n確定？’)) return;
 
-  setStatus('處理行事曆事件中…', 'load');
-  let ok = 0;
-  const failures = [];
+setStatus(‘處理行事曆事件中…’, ‘load’);
+let ok = 0;
+const failures = [];
 
-  for (const item of toProcess) {
-    try {
-      let dates;
-      // 有跨天格式（含 - 或 ~）優先用 parseItemDate
-      const hasRange = item.date && /\d\/\d.*[-–~].*\d\/\d|\d\/\d.*[-–~].*\d(?!\d)/.test(item.date);
-      if (item.startISO && !hasRange) {
-        const isAllDay = item.allDay || item.startISO.includes('T00:00:00');
-        if (isAllDay) {
-          const parts = item.startISO.slice(0,10).split('-').map(Number);
-          const st = new Date(parts[0], parts[1]-1, parts[2]);
-          const en = new Date(parts[0], parts[1]-1, parts[2]+1);
-          dates = { start: fmtDateOnly(st), end: fmtDateOnly(en), allDay: true };
-        } else {
-          const st = new Date(item.startISO);
-          const en = item.endISO ? new Date(item.endISO) : new Date(st.getTime() + 3600000);
-          dates = { start: st, end: en, allDay: false };
-        }
-      } else {
-        dates = parseItemDate(item.date);
-      }
-      if (!dates) { failures.push(`${item.title}：無法解析日期「${item.date}」`); continue; }
+for (const item of toProcess) {
+try {
+let dates;
+// 有跨天格式（含 - 或 ~）優先用 parseItemDate
+const hasRange = item.date && /\d/\d.*[-–~].*\d/\d|\d/\d.*[-–~].*\d(?!\d)/.test(item.date);
+if (item.startISO && !hasRange) {
+const isAllDay = item.allDay || item.startISO.includes(‘T00:00:00’);
+if (isAllDay) {
+const parts = item.startISO.slice(0,10).split(’-’).map(Number);
+const st = new Date(parts[0], parts[1]-1, parts[2]);
+const en = new Date(parts[0], parts[1]-1, parts[2]+1);
+dates = { start: fmtDateOnly(st), end: fmtDateOnly(en), allDay: true };
+} else {
+const st = new Date(item.startISO);
+const en = item.endISO ? new Date(item.endISO) : new Date(st.getTime() + 3600000);
+dates = { start: st, end: en, allDay: false };
+}
+} else {
+dates = parseItemDate(item.date);
+}
+if (!dates) { failures.push(`${item.title}：無法解析日期「${item.date}」`); continue; }
 
-      const startStr = dates.allDay ? (typeof dates.start === 'string' ? dates.start : fmtDateOnly(dates.start)) : dates.start.toISOString();
-      const endStr   = dates.allDay ? (typeof dates.end   === 'string' ? dates.end   : fmtDateOnly(dates.end))   : dates.end.toISOString();
+```
+  const startStr = dates.allDay ? (typeof dates.start === 'string' ? dates.start : fmtDateOnly(dates.start)) : dates.start.toISOString();
+  const endStr   = dates.allDay ? (typeof dates.end   === 'string' ? dates.end   : fmtDateOnly(dates.end))   : dates.end.toISOString();
 
-      // 檢查結束必須晚於開始
-      if (new Date(endStr) <= new Date(startStr)) {
-        failures.push(`${item.title}：日期錯誤 start=${startStr} end=${endStr}`);
-        continue;
-      }
+  // 檢查結束必須晚於開始
+  if (new Date(endStr) <= new Date(startStr)) {
+    failures.push(`${item.title}：日期錯誤 start=${startStr} end=${endStr}`);
+    continue;
+  }
 
-      const isUpdate = item.calStatus === 'ok' && item.calEventId;
-      const colorToSend = item.color !== 'ask' ? item.color
-        : isUpdate ? null
-        : (item.calColor || 'purple');
-      const params = new URLSearchParams({
-        action: isUpdate ? 'updateEvent' : 'addEvent',
-        title:  encodeURIComponent(item.title),
-        start:  startStr,
-        end:    endStr,
-        allDay: dates.allDay ? '1' : '0',
-        desc:   ''
-      });
-      if (colorToSend) params.set('color', colorToSend);
-      if (isUpdate) params.set('eventId', encodeURIComponent(item.calEventId));
+  const isUpdate = item.calStatus === 'ok' && item.calEventId;
+  const colorToSend = item.color !== 'ask' ? item.color
+    : isUpdate ? null
+    : (item.calColor || 'purple');
+  const params = new URLSearchParams({
+    action: isUpdate ? 'updateEvent' : 'addEvent',
+    title:  encodeURIComponent(item.title),
+    start:  startStr,
+    end:    endStr,
+    allDay: dates.allDay ? '1' : '0',
+    desc:   ''
+  });
+  if (colorToSend) params.set('color', colorToSend);
+  if (isUpdate) params.set('eventId', encodeURIComponent(item.calEventId));
 
-      const res  = await fetch(`${url}?${params}`);
-      const data = await res.json();
-      if (data.ok) {
-        item.calStatus  = 'ok';
-        item.calEventId = data.eventId;
-        item.calNote    = `✓ ${isUpdate ? '已更新' : '已建立'}：${item.title}`;
-        ok++;
-      } else if (isUpdate && data.error && data.error.includes('not found')) {
-        // 找不到原事件 → 自動改成新建
-        params.set('action', 'addEvent');
-        params.delete('eventId');
-        const res2  = await fetch(`${url}?${params}`);
-        const data2 = await res2.json();
-        if (data2.ok) {
-          item.calStatus  = 'ok';
-          item.calEventId = data2.eventId;
-          item.calNote    = `✓ 已建立（原事件不存在）：${item.title}`;
-          ok++;
-        } else {
-          failures.push(`${item.title}：${data2.error || '新建失敗'}`);
-        }
-      } else {
-        failures.push(`${item.title}：${data.error || 'Apps Script 回傳失敗'}`);
-      }
-    } catch(e) {
-      failures.push(`${item.title}：${e.message || '網路錯誤'}`);
+  const res  = await fetch(`${url}?${params}`);
+  const data = await res.json();
+  if (data.ok) {
+    item.calStatus  = 'ok';
+    item.calEventId = data.eventId;
+    item.calNote    = `✓ ${isUpdate ? '已更新' : '已建立'}：${item.title}`;
+    ok++;
+  } else if (isUpdate && data.error && data.error.includes('not found')) {
+    // 找不到原事件 → 自動改成新建
+    params.set('action', 'addEvent');
+    params.delete('eventId');
+    const res2  = await fetch(`${url}?${params}`);
+    const data2 = await res2.json();
+    if (data2.ok) {
+      item.calStatus  = 'ok';
+      item.calEventId = data2.eventId;
+      item.calNote    = `✓ 已建立（原事件不存在）：${item.title}`;
+      ok++;
+    } else {
+      failures.push(`${item.title}：${data2.error || '新建失敗'}`);
     }
-  }
-
-  render();
-  if (failures.length) {
-    setStatus(`行事曆：處理 ${ok} 筆，${failures.length} 筆失敗`, ok > 0 ? 'ok' : 'err');
-    alert(`以下 ${failures.length} 筆失敗：\n\n${failures.join('\n')}`);
   } else {
-    setStatus(`行事曆：處理 ${ok} 筆完成`, 'ok');
+    failures.push(`${item.title}：${data.error || 'Apps Script 回傳失敗'}`);
   }
+} catch(e) {
+  failures.push(`${item.title}：${e.message || '網路錯誤'}`);
+}
+```
+
+}
+
+render();
+if (failures.length) {
+setStatus(`行事曆：處理 ${ok} 筆，${failures.length} 筆失敗`, ok > 0 ? ‘ok’ : ‘err’);
+alert(`以下 ${failures.length} 筆失敗：\n\n${failures.join('\n')}`);
+} else {
+setStatus(`行事曆：處理 ${ok} 筆完成`, ‘ok’);
+}
 }
 
 function setDateText(id, val) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  item.date = val;
-  const d = parseItemDate(val);
-  if (d) {
-    item.startISO  = d.isDateOnly ? null : d.start.toISOString();
-    item.endISO    = d.isDateOnly ? null : d.end.toISOString();
-    item.allDay    = d.allDay;
-    item._dateOnly = d.isDateOnly ? { start: d.start, end: d.end } : null;
-  } else {
-    item.startISO  = null;
-    item.endISO    = null;
-    item.allDay    = true;
-    item._dateOnly = null;
-  }
+const item = items.find(i => i.id === id);
+if (!item) return;
+item.date = val;
+const d = parseItemDate(val);
+if (d) {
+item.startISO  = d.isDateOnly ? null : d.start.toISOString();
+item.endISO    = d.isDateOnly ? null : d.end.toISOString();
+item.allDay    = d.allDay;
+item._dateOnly = d.isDateOnly ? { start: d.start, end: d.end } : null;
+} else {
+item.startISO  = null;
+item.endISO    = null;
+item.allDay    = true;
+item._dateOnly = null;
+}
 }
 
 function fmtDateOnly(d) {
-  if (typeof d === 'string') return d; // 已經是 YYYY-MM-DD 就直接用
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+if (typeof d === ‘string’) return d; // 已經是 YYYY-MM-DD 就直接用
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function parseItemDate(s) {
-  if (!s) return null;
-  s = s.trim();
-  if (!s || s.includes('進行中') || s.includes('本週')) {
-    const d = new Date();
-    return { start: d, end: d, allDay: true, isDateOnly: true };
-  }
+if (!s) return null;
+s = s.trim();
+if (!s || s.includes(‘進行中’) || s.includes(‘本週’)) {
+const d = new Date();
+return { start: d, end: d, allDay: true, isDateOnly: true };
+}
 
-  const yr = new Date().getFullYear();
+const yr = new Date().getFullYear();
 
-  // 4/2 14:00 - 4/3 15:00（跨天有時間）
-  let m = s.match(/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})\s*[-–~]\s*(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
-  if (m) {
-    const st = new Date(yr, +m[1]-1, +m[2], +m[3], +m[4]);
-    const en = new Date(yr, +m[5]-1, +m[6], +m[7], +m[8]);
-    return { start: st, end: en, allDay: false };
-  }
+// 4/2 14:00 - 4/3 15:00（跨天有時間）
+let m = s.match(/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{2})\s*[-–~]\s*(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
+if (m) {
+const st = new Date(yr, +m[1]-1, +m[2], +m[3], +m[4]);
+const en = new Date(yr, +m[5]-1, +m[6], +m[7], +m[8]);
+return { start: st, end: en, allDay: false };
+}
 
-  // 4/2-4/3 或 4/2~4/3（整日跨天）
-  m = s.match(/(\d{1,2})\/(\d{1,2})\s*[-–~]\s*(\d{1,2})\/(\d{1,2})/);
-  if (m) {
-    const st = new Date(yr, +m[1]-1, +m[2]);
-    const en = new Date(yr, +m[3]-1, +m[4]);
-    en.setDate(en.getDate() + 1);
-    return { start: st, end: en, allDay: true, isDateOnly: true };
-  }
+// 4/2-4/3 或 4/2~4/3（整日跨天）
+m = s.match(/(\d{1,2})/(\d{1,2})\s*[-–~]\s*(\d{1,2})/(\d{1,2})/);
+if (m) {
+const st = new Date(yr, +m[1]-1, +m[2]);
+const en = new Date(yr, +m[3]-1, +m[4]);
+en.setDate(en.getDate() + 1);
+return { start: st, end: en, allDay: true, isDateOnly: true };
+}
 
-  // 4/2-3（同月跨天）
-  m = s.match(/(\d{1,2})\/(\d{1,2})\s*[-–~]\s*(\d{1,2})(?!\d)/);
-  if (m) {
-    const st = new Date(yr, +m[1]-1, +m[2]);
-    const en = new Date(yr, +m[1]-1, +m[3]);
-    en.setDate(en.getDate() + 1);
-    return { start: st, end: en, allDay: true, isDateOnly: true };
-  }
+// 4/2-3（同月跨天）
+m = s.match(/(\d{1,2})/(\d{1,2})\s*[-–~]\s*(\d{1,2})(?!\d)/);
+if (m) {
+const st = new Date(yr, +m[1]-1, +m[2]);
+const en = new Date(yr, +m[1]-1, +m[3]);
+en.setDate(en.getDate() + 1);
+return { start: st, end: en, allDay: true, isDateOnly: true };
+}
 
-  // 4/3 15:00（單天有時間）
-  m = s.match(/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
-  if (m) {
-    const h = +m[3], mi = +m[4];
-    const st = new Date(yr, +m[1]-1, +m[2], h, mi);
-    const en = new Date(yr, +m[1]-1, +m[2], h+1, mi);
-    return { start: st, end: en, allDay: false };
-  }
+// 4/3 15:00（單天有時間）
+m = s.match(/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
+if (m) {
+const h = +m[3], mi = +m[4];
+const st = new Date(yr, +m[1]-1, +m[2], h, mi);
+const en = new Date(yr, +m[1]-1, +m[2], h+1, mi);
+return { start: st, end: en, allDay: false };
+}
 
-  // 4/3（單天整日）
-  m = s.match(/(\d{1,2})\/(\d{1,2})/);
-  if (m) {
-    const st = new Date(yr, +m[1]-1, +m[2]);
-    const en = new Date(yr, +m[1]-1, +m[2]);
-    en.setDate(en.getDate() + 1);
-    return { start: st, end: en, allDay: true, isDateOnly: true };
-  }
+// 4/3（單天整日）
+m = s.match(/(\d{1,2})/(\d{1,2})/);
+if (m) {
+const st = new Date(yr, +m[1]-1, +m[2]);
+const en = new Date(yr, +m[1]-1, +m[2]);
+en.setDate(en.getDate() + 1);
+return { start: st, end: en, allDay: true, isDateOnly: true };
+}
 
-  return null;
+return null;
 }
 
 // ── REMINDERS ─────────────────────────────────────────
 function doReminders() {
-  syncLive();
-  const confirmed = items.filter(i=>i.action==='confirm');
-  if (!confirmed.length) { alert('請先勾選（✓）項目'); return; }
+syncLive();
+const confirmed = items.filter(i=>i.action===‘confirm’);
+if (!confirmed.length) { alert(‘請先勾選（✓）項目’); return; }
 
-  const shoot = confirmed.filter(i=>i.cat==='拍攝');
-  const work  = confirmed.filter(i=>i.cat==='工作');
+const shoot = confirmed.filter(i=>i.cat===‘拍攝’);
+const work  = confirmed.filter(i=>i.cat===‘工作’);
 
-  if (!confirm(
-    `📱 新增至 Mac 提醒\n\n` +
-    `🎬 拍攝（${shoot.length}）：${shoot.map(i=>i.title).join('、') || '無'}\n\n` +
-    `🗂 工作（${work.length}）：${work.map(i=>i.title).join('、') || '無'}\n\n` +
-    `確定？（需要已安裝「好咖提醒事項」捷徑）`)) return;
+if (!confirm(
+`📱 新增至 Mac 提醒\n\n` +
+`🎬 拍攝（${shoot.length}）：${shoot.map(i=>i.title).join('、') || '無'}\n\n` +
+`🗂 工作（${work.length}）：${work.map(i=>i.title).join('、') || '無'}\n\n` +
+`確定？（需要已安裝「好咖提醒事項」捷徑）`)) return;
 
-  // Call Apple Shortcut via URL scheme
-  const payload = JSON.stringify(confirmed.map(i => {
-    let startISO = i.startISO || null;
-    let timeStr  = '';
-    if (!startISO) {
-      const d = parseItemDate(i.date);
-      if (d) startISO = d.start.toISOString();
-    }
-    if (startISO) {
-      const d = new Date(startISO);
-      const mm = String(d.getMonth()+1).padStart(2,'0');
-      const dd = String(d.getDate()).padStart(2,'0');
-      const hh = String(d.getHours()).padStart(2,'0');
-      const mi = String(d.getMinutes()).padStart(2,'0');
-      timeStr = ` ｜${mm}/${dd} ${hh}:${mi}`;
-    }
-    return { title: i.title + timeStr, cat: i.cat };
-  }));
-  const shortcutName = encodeURIComponent('好咖提醒事項');
-  window.location.href = `shortcuts://run-shortcut?name=${shortcutName}&input=text&text=${encodeURIComponent(payload)}`;
+// Call Apple Shortcut via URL scheme
+const payload = JSON.stringify(confirmed.map(i => {
+let startISO = i.startISO || null;
+let timeStr  = ‘’;
+if (!startISO) {
+const d = parseItemDate(i.date);
+if (d) startISO = d.start.toISOString();
+}
+if (startISO) {
+const d = new Date(startISO);
+const mm = String(d.getMonth()+1).padStart(2,‘0’);
+const dd = String(d.getDate()).padStart(2,‘0’);
+const hh = String(d.getHours()).padStart(2,‘0’);
+const mi = String(d.getMinutes()).padStart(2,‘0’);
+timeStr = ` ｜${mm}/${dd} ${hh}:${mi}`;
+}
+return { title: i.title + timeStr, cat: i.cat };
+}));
+const shortcutName = encodeURIComponent(‘好咖提醒事項’);
+window.location.href = `shortcuts://run-shortcut?name=${shortcutName}&input=text&text=${encodeURIComponent(payload)}`;
 }
 
 // ── EXPORT ────────────────────────────────────────────
 function exportJSON() {
-  syncLive();
-  const confirmed = items.filter(i=>i.action==='confirm');
-  const out = {
-    exportTime: new Date().toLocaleString('zh-TW'),
-    addRequests: Object.entries(addCmds).filter(([,v])=>v&&v.trim())
-      .map(([proj,cmd])=>({ proj, instruction: cmd })),
-    items: confirmed.map(i=>({
-      id:i.id, proj:i.proj, cat:i.cat, color:i.color,
-      title:i.title, date:i.date, calStatus:i.calStatus,
-      instruction: i.cmd||null
-    }))
-  };
-  const blob = new Blob([JSON.stringify(out,null,2)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'borry_tasks.json'; a.click();
+syncLive();
+const confirmed = items.filter(i=>i.action===‘confirm’);
+const out = {
+exportTime: new Date().toLocaleString(‘zh-TW’),
+addRequests: Object.entries(addCmds).filter(([,v])=>v&&v.trim())
+.map(([proj,cmd])=>({ proj, instruction: cmd })),
+items: confirmed.map(i=>({
+id:i.id, proj:i.proj, cat:i.cat, color:i.color,
+title:i.title, date:i.date, calStatus:i.calStatus,
+instruction: i.cmd||null
+}))
+};
+const blob = new Blob([JSON.stringify(out,null,2)], {type:‘application/json’});
+const a = document.createElement(‘a’); a.href = URL.createObjectURL(blob);
+a.download = ‘borry_tasks.json’; a.click();
 }
 
 // ── INIT ──────────────────────────────────────────────
 loadConfig();
 </script>
+
 </body>
 </html>
