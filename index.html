@@ -49,10 +49,26 @@ h1 { font-size: 16px; font-weight: 700; color: #fff; }
 /* ── Notice ── */
 .notice {
   background: #1a1200; border: 1px solid #6b3a00; border-radius: 8px;
-  padding: 8px 14px; font-size: 11px; color: #f59e0b;
-  margin-bottom: 10px; line-height: 1.7; display: none;
+  font-size: 11px; color: #f59e0b;
+  margin-bottom: 10px; display: none; overflow: hidden;
 }
 .notice.show { display: block; }
+.notice-header {
+  padding: 7px 14px; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 600;
+}
+.notice-header:hover { background: rgba(255,255,255,0.03); }
+.notice-list {
+  display: none; border-top: 1px solid #6b3a00;
+  padding: 6px 14px 10px;
+}
+.notice-list.open { display: block; }
+.notice-item {
+  padding: 4px 0; border-bottom: 1px solid #2a1800;
+  font-size: 10.5px; line-height: 1.5;
+}
+.notice-item:last-child { border-bottom: none; }
 
 /* ── Project block ── */
 .proj-block { margin-bottom: 18px; }
@@ -222,22 +238,19 @@ select {
 @media (max-width: 640px) {
   body { padding: 12px 10px; font-size: 12px; }
 
-  /* 手機版：所有 item-row 改成垂直堆疊 */
   .item-row {
-    grid-template-columns: 44px 1fr 32px 32px 32px !important;
-    grid-template-rows: auto auto;
+    grid-template-columns: 44px 42px 1fr 32px 32px 32px !important;
+    grid-template-rows: auto auto auto;
   }
   .item-row.no-cat {
     grid-template-columns: 44px 1fr 32px 32px 32px !important;
   }
 
-  /* 內容區塊佔滿第二列 */
   .content-area {
     grid-column: 1 / -1;
     grid-row: 2;
   }
 
-  /* cal-status 也佔滿一列 */
   .item-row .cal-status {
     grid-column: 1 / -1;
     grid-row: 3;
@@ -247,25 +260,17 @@ select {
   }
   .cal-note { font-size: 9px; text-align: left; }
 
-  /* 按鈕放大方便點 */
   .btn-confirm, .btn-edit, .btn-x {
     width: 32px; height: 32px; font-size: 13px;
   }
 
-  /* 篩選按鈕 */
   .filter-btn { padding: 5px 12px; font-size: 11px; }
   .run-btn { font-size: 12px; padding: 9px 14px; }
   .help-item { font-size: 11px; }
   .help-icon { min-width: 50px; }
-
-  /* bottom bar 換行 */
   .bottom-bar { gap: 6px; }
   .action-btn { padding: 8px 12px; font-size: 11px; }
-
-  /* config */
   .config-input { font-size: 12px; }
-
-  /* select */
   select { font-size: 10px; padding: 3px 2px; }
   .sel-color { min-width: 44px; }
 }
@@ -384,6 +389,14 @@ select {
 </div>
 
 <script>
+function toggleNotice() {
+  const list  = document.getElementById('noticeList');
+  const arrow = document.getElementById('noticeArrow');
+  if (!list) return;
+  const open = list.classList.toggle('open');
+  arrow.textContent = open ? '▾ 收合' : '▸ 展開';
+}
+
 function toggleHelp() {
   const c = document.getElementById('helpContent');
   const a = document.getElementById('helpArrow');
@@ -509,7 +522,14 @@ async function runSync() {
     const missing = items.filter(i => i.calStatus === 'miss');
     const noticeEl = document.getElementById('notice');
     if (missing.length) {
-      noticeEl.textContent = `❌ 行事曆缺少 ${missing.length} 筆：${missing.map(i=>i.title).join(' / ')}`;
+      noticeEl.innerHTML = `
+        <div class="notice-header" onclick="toggleNotice()">
+          <span>❌ 行事曆缺少 ${missing.length} 筆</span>
+          <span id="noticeArrow">▸ 展開</span>
+        </div>
+        <div class="notice-list" id="noticeList">
+          ${missing.map(i => `<div class="notice-item">${i.title}${i.date ? ' · ' + i.date : ''}</div>`).join('')}
+        </div>`;
       noticeEl.classList.add('show');
     } else {
       noticeEl.classList.remove('show');
