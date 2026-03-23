@@ -586,7 +586,7 @@ ${JSON.stringify(calSimple)}
 請整理所有任務（每一行含 @ 的都是任務），只回傳 JSON：
 {"projects":[{"shortName":"2-4字簡稱","fullName":"原始專案名稱","tasks":[{"title":"任務描述不超過15字，不含@和人名和日期","assignees":["石頭","Borry"],"dateStr":"03/19或03/19-03/21或null","startISO":"2026-03-19T14:00:00或null","endISO":"或null","allDay":true,"isShoot":false,"calStatus":"ok或miss","calMatchTitle":"對應行事曆標題或null","calEventId":"對應行事曆id或null"}]}]}
 
-人員規則：assignees 只列該行 @ 後面的人名，例「3/25 細綱 ＠Louis 昊奇 Borry」→["Louis","昊奇","Borry"]，不含@。注意：「巴西」和「Louis」是同一個人，統一用「巴西」。
+人員規則：assignees 只列該行 @ 後面的人名，例「3/25 細綱 ＠Louis 昊奇 Borry」→["Louis","昊奇","Borry"]，不含@。注意：「巴西」和「Louis」是同一個人，統一用「巴西」；「阿包」和「包」是同一個人，統一用「阿包」。
 
 shortName規則：去掉英文編號/底線/括號/季數，只留2-4字核心名稱。例：「k.奶茶弟的復仇」→「奶茶弟」、「h.公視台語台_我幹_電視電影」→「我幹」、「J.小點點MV」→「小點點」、「b.大山小腳ㄚ(第一季)_節目」→「大山」、「K.謝文憲線上課程製作」→「憲哥課程」、「i.文化部114年度劇集劇本開發補助_直男行不行_劇本」→「直男」、「a.晚窒息_電影」→「晚窒息」。
 
